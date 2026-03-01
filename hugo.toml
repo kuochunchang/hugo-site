@@ -1,3 +1,48 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
+baseURL = ""
+languageCode = "zh-TW"
+title = "GuoJun's Hub"
+theme = "PaperMod"
+
+[params]
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = true
+  ShowCodeCopyButtons = true
+
+[params.homeInfoParams]
+  Title = "歡迎"
+  Content = "AI 整理的知識、每日報告與技術筆記"
+
+[[menu.main]]
+  name = "首頁"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "文章"
+  url = "/posts/"
+  weight = 2
+
+[[menu.main]]
+  name = "每日報告"
+  url = "/reports/"
+  weight = 3
+
+[[menu.main]]
+  name = "Dashboard"
+  url = "/dashboard/"
+  weight = 4
+
+[[menu.main]]
+  name = "標籤"
+  url = "/tags/"
+  weight = 5
+
+[[menu.main]]
+  name = "搜尋"
+  url = "/search/"
+  weight = 6
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
