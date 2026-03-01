@@ -2,6 +2,7 @@ baseURL = ""
 languageCode = "zh-TW"
 title = "GuoJun's Hub"
 theme = "PaperMod"
+buildFuture = true
 
 [params]
   defaultTheme = "auto"
