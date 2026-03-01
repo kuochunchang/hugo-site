@@ -6,8 +6,6 @@ tags: ["AI", "Agent", "Context Engineering", "LLM"]
 summary: "系統化分析 Agent Skills for Context Engineering 專案，涵蓋上下文工程理論、技能架構、實戰案例與核心洞察。"
 ---
 
-# Agent Skills for Context Engineering — 深度分析報告
-
 > 來源：[Agent Skills for Context Engineering](https://github.com/muratcankoylan/Agent-Skills-for-Context-Engineering)
 
 ## 一、專案概述
