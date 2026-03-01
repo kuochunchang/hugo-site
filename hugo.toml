@@ -30,19 +30,14 @@ theme = "PaperMod"
   weight = 3
 
 [[menu.main]]
-  name = "Dashboard"
-  url = "/dashboard/"
-  weight = 4
-
-[[menu.main]]
   name = "標籤"
   url = "/tags/"
-  weight = 5
+  weight = 4
 
 [[menu.main]]
   name = "搜尋"
   url = "/search/"
-  weight = 6
+  weight = 5
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
