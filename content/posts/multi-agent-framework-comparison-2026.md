@@ -1,6 +1,11 @@
-# Multi-Agent AI Framework 深度比較報告 (2026 Q1)
+---
+title: "Multi-Agent AI Framework 深度比較報告 (2026 Q1)"
+date: 2026-02-27
+draft: false
+tags: ["AI", "Agent", "Multi-Agent", "Framework"]
+description: "CDP 多代理人編排架構選型參考，涵蓋 CrewAI、LangGraph、AutoGen、OpenAI Swarm 等主流框架的深度比較。"
+---
 
-> 研究日期：2026-02-27
 > 用途：CDP (Customer Data Platform) 多代理人編排架構選型參考
 
 ---
