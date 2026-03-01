@@ -4,8 +4,7 @@ title = "GuoJun's Hub"
 theme = "PaperMod"
 
 [params]
-  defaultTheme = "light"
-  disableThemeToggle = true
+  defaultTheme = "auto"
   ShowReadingTime = true
   ShowPostNavLinks = true
   ShowBreadCrumbs = true
