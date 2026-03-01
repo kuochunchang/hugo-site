@@ -154,7 +154,7 @@ OpenHands 提供多種產品形態以適應不同使用場景：
 
 ### 4.2 模組化四套件架構
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │              openhands.agent_server          │
 │         FastAPI REST / WebSocket Server      │
@@ -179,7 +179,7 @@ OpenHands 提供多種產品形態以適應不同使用場景：
 
 所有互動都建模為不可變事件，附加到事件日誌中：
 
-```
+```text
 BaseEvent (immutable)
   ├── ActionEvent        <- tool calls + reasoning
   ├── ObservationEvent   <- tool execution results
@@ -199,7 +199,7 @@ ConversationState (single mutable object)
 
 系統採用分散式客戶端-伺服器架構：
 
-```
+```text
 ┌──────────────────┐   RESTful API    ┌──────────────────────┐
 │  OpenHands       │ <─────────────> │  Docker Container    │
 │  Backend         │                  │  ┌────────────────┐  │
