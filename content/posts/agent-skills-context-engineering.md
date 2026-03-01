@@ -1,5 +1,5 @@
 ---
-title: "Agent Skills for Context Engineering — 深度分析報告"
+title: "Agent Skills for Context Engineering 分析報告"
 date: 2026-03-01
 draft: false
 tags: ["AI", "Agent", "Context Engineering", "LLM"]
