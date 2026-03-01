@@ -1,35 +1,17 @@
 /*
- * Fix code blocks for CJK + ASCII mixed content (box-drawing diagrams).
- *
- * Problem: PaperMod has no monospace font for <pre>/<code>, and CJK
- * characters in fallback fonts don't align to the monospace grid.
- *
- * Solution: CJK monospace fonts first (where 1 CJK char = 2 Latin chars),
- * then Latin monospace fonts, then generic monospace.
+ * Code block styling for CJK + ASCII mixed content.
+ * Keep code blocks compact and readable.
  */
-pre,
-code,
-.post-content pre code,
-.post-content code {
-    font-family:
-        /* CJK monospace (installed on various OS) */
-        'Sarasa Mono TC',
-        'Noto Sans Mono CJK TC',
-        'Source Han Mono',
-        /* Latin monospace */
-        'Fira Code',
-        'JetBrains Mono',
-        'Source Code Pro',
-        Menlo, Monaco, Consolas,
-        'Courier New',
-        monospace;
-}
-
 .post-content pre code {
+    font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+    font-size: 0.78em;
+    line-height: 1.6;
     word-break: normal;
     overflow-wrap: normal;
     white-space: pre;
-    line-height: 1.75;
-    font-size: 0.85em;
     tab-size: 4;
+}
+
+.post-content code {
+    font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
 }
