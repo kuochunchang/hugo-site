@@ -1,0 +1,15 @@
+/* Fix code blocks: add monospace font and proper rendering for box-drawing characters */
+pre,
+code,
+.post-content pre code,
+.post-content code {
+    font-family: 'Fira Code', 'JetBrains Mono', 'Source Code Pro', 'Noto Sans Mono CJK TC', 'Noto Sans Mono', Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.post-content pre code {
+    word-break: normal;
+    overflow-wrap: normal;
+    white-space: pre;
+    line-height: 1.6;
+    tab-size: 4;
+}

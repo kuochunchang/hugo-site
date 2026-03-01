@@ -154,12 +154,19 @@ OpenHands 提供多種產品形態以適應不同使用場景：
 
 ### 4.2 模組化四套件架構
 
-| 層級 | 套件 | 內容 |
-|------|------|------|
-| 最上層 | `openhands.agent_server` | FastAPI REST / WebSocket 伺服器 |
-| 核心層 | `openhands.sdk` | Agent, Conversation, LLM, Tool, MCP |
-| 工具層 | `openhands.tools` | bash, editor, browser 等 |
-| 環境層 | `openhands.workspace` | Local, Docker, Hosted APIs |
+```
+┌─────────────────────────────────────────────┐
+│              openhands.agent_server          │
+│         FastAPI REST / WebSocket 伺服器       │
+├─────────────────────────────────────────────┤
+│                openhands.sdk                 │
+│    Agent │ Conversation │ LLM │ Tool │ MCP  │
+├──────────────────┬──────────────────────────┤
+│  openhands.tools │    openhands.workspace   │
+│  bash, editor,   │    Local, Docker,        │
+│  browser, etc.   │    Hosted APIs           │
+└──────────────────┴──────────────────────────┘
+```
 
 | 套件 | 職責 |
 |------|------|
@@ -172,24 +179,32 @@ OpenHands 提供多種產品形態以適應不同使用場景：
 
 所有互動都建模為不可變事件，附加到事件日誌中：
 
-**BaseEvent（不可變）：**
-- **ActionEvent** — 代理工具呼叫 + 推理過程
-- **ObservationEvent** — 工具執行結果
-- **CondensationEvent** — 對話壓縮摘要
+```
+BaseEvent（不可變）
+  ├── ActionEvent      ← 代理工具呼叫 + 推理過程
+  ├── ObservationEvent ← 工具執行結果
+  └── CondensationEvent ← 對話壓縮摘要
 
-**ConversationState（唯一可變物件）：**
-- 可變元資料（代理狀態、統計、確認策略）
-- 只增事件日誌（EventLog + FIFO 鎖）
+ConversationState（唯一可變物件）
+  ├── 可變元資料（代理狀態、統計、確認策略）
+  └── 只增事件日誌（EventLog + FIFO 鎖）
+```
 
 ### 4.4 執行時期架構（Runtime）
 
 系統採用分散式客戶端-伺服器架構：
 
-| 元件 | 角色 | 內容 |
-|------|------|------|
-| **OpenHands 後端** | 客戶端 | 代理邏輯、LLM 互動、事件管理 |
-| ↕ | RESTful API | 雙向通訊 |
-| **Docker Container** | 伺服器 | ActionExecutor（Bash Shell、Browser、Plugins） |
+```
+┌──────────────────┐    RESTful API     ┌──────────────────────┐
+│  OpenHands 後端  │ <───────────────> │  Docker Container    │
+│  （客戶端）       │                   │  ┌────────────────┐  │
+│                  │                   │  │ ActionExecutor │  │
+│  - 代理邏輯      │                   │  │  - Bash Shell  │  │
+│  - LLM 互動     │                   │  │  - Browser     │  │
+│  - 事件管理      │                   │  │  - Plugins     │  │
+└──────────────────┘                   │  └────────────────┘  │
+                                       └──────────────────────┘
+```
 
 **執行流程：**
 1. 使用者提供基礎 Docker 映像（預設 `nikolaik/python-nodejs:python3.12-nodejs22`）
