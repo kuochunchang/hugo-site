@@ -1,2 +1,7 @@
 public/
 .hugo_build.lock
+
+# Discord bot
+discord-bot/.env
+discord-bot/.venv/
+__pycache__/
