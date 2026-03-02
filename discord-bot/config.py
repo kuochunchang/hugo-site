@@ -14,7 +14,7 @@ SITE_URL = os.environ.get("SITE_URL", "https://kuochunchang.github.io/hugo-site"
 
 # Claude CLI 設定
 CLAUDE_MAX_TURNS = int(os.environ.get("CLAUDE_MAX_TURNS", "50"))
-CLAUDE_TIMEOUT = int(os.environ.get("CLAUDE_TIMEOUT", "1800"))  # 30 分鐘
+CLAUDE_TIMEOUT = int(os.environ.get("CLAUDE_TIMEOUT", "3600"))  # 60 分鐘
 
 # TTS 設定
 TTS_VOICE = os.environ.get("TTS_VOICE", "zh-TW-HsiaoChenNeural")

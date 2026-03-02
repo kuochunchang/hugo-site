@@ -17,7 +17,7 @@ def build_research_prompt(topic: str, voice: str) -> str:
 ### 第一步：深度研究
 
 1. 使用 WebSearch 從至少 3-5 個不同角度搜尋最新資料
-2. 使用 WebFetch 閱讀 3-5 個最重要的參考來源全文
+2. 使用 WebFetch 閱讀 5-10 個最重要的參考來源全文
 3. 交叉驗證不同來源的資訊
 
 ### 第二步：撰寫文章
