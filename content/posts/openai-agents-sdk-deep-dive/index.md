@@ -1,9 +1,9 @@
 ---
-title: "OpenAI Agents SDK 深度解析：打造生產級多代理 AI 應用的完整指南"
+title: "OpenAI Agents SDK：核心架構、Handoffs 與生產實踐"
 date: 2026-03-01
 draft: false
 tags: ["OpenAI", "AI Agents", "LLM", "Python", "多代理系統"]
-summary: "深入解析 OpenAI Agents SDK 的核心架構、Handoffs 機制、Guardrails 防護欄與 Tracing 追蹤功能，並與 LangChain、CrewAI、LangGraph 進行全面比較，探討實際生產應用場景。"
+summary: "解析 OpenAI Agents SDK 的架構、Handoffs、Guardrails 與 Tracing，並與 LangChain、CrewAI、LangGraph 比較。"
 ---
 
 <audio controls preload="none" style="width:100%; margin: 1rem 0;">

@@ -1,9 +1,9 @@
 ---
-title: "Harness Engineering 三大核心：Context Engineering、架構約束與垃圾回收的深度解析"
+title: "Harness Engineering 三大核心：Context Engineering、架構約束與垃圾回收"
 date: 2026-03-02
 draft: false
 tags: ["AI Engineering", "Harness Engineering", "Context Engineering", "Software Architecture", "AI Agents"]
-summary: "深度解析 OpenAI 提出的 Harness Engineering 三大核心組成——Context Engineering、Architectural Constraints 與 Garbage Collection——並提供具體實踐方案與範例。"
+summary: "OpenAI 提出的 Harness Engineering 三大核心：Context Engineering、Architectural Constraints 與 Garbage Collection，含實踐方案與範例。"
 ---
 
 <audio controls preload="none" style="width:100%; margin: 1rem 0;">
