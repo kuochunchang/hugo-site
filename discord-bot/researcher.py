@@ -118,11 +118,9 @@ async def run_research(
     cmd = [
         "claude",
         "-p", prompt,
-        "--allowedTools", "WebSearch,WebFetch,Read,Write,Edit,Bash,Glob,Grep,Agent",
         "--max-turns", str(config.CLAUDE_MAX_TURNS),
         "--dangerously-skip-permissions",
         "--model", "sonnet",
-        "--strict-mcp-config",  # 不載入任何 MCP server，避免初始化阻塞
     ]
 
     start = time.monotonic()
@@ -197,6 +195,9 @@ async def run_research(
 
     elapsed = time.monotonic() - start
     output = stdout.decode(errors="replace")
+    err_output = stderr.decode(errors="replace")
+    if err_output.strip():
+        log.info("Claude stderr：%s", err_output.strip()[:500])
 
     if proc.returncode != 0:
         err = stderr.decode(errors="replace")[:500]
@@ -217,7 +218,10 @@ async def run_research(
     if success:
         log.info("研究完成：%s (slug: %s，耗時 %.0f 秒)", title, slug, elapsed)
     else:
+        # 記錄 Claude 輸出的最後 500 字，方便排查
+        tail = output.strip()[-500:] if output.strip() else "(空輸出)"
         log.warning("研究未成功解析結果（耗時 %.0f 秒）：%s", elapsed, reason)
+        log.warning("Claude 輸出尾部：%s", tail)
 
     return ResearchResult(
         success=success,
