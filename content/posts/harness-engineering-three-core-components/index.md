@@ -13,7 +13,7 @@ summary: "OpenAI 提出的 Harness Engineering 三大核心：Context Engineerin
 
 > 研究日期：2026-03-02
 
-2026 年 2 月，OpenAI 發表了一篇題為「Harness Engineering：在 Agent 優先的世界中運用 Codex」的文章，揭示了一個令人震驚的工程成就：一支 3 到 7 人的工程師團隊，在五個月內以近乎零手寫程式碼的方式，構建出一個超過一百萬行的生產級軟體系統。他們的秘訣，就是 **Harness Engineering**。
+2026 年 2 月，OpenAI 發表了一篇題為「Harness Engineering：在 Agent 優先的世界中運用 Codex」的文章，描述了一個工程案例：一支 3 到 7 人的工程師團隊，在五個月內以近乎零手寫程式碼的方式，構建出一個超過一百萬行的生產級軟體系統。他們的秘訣，就是 **Harness Engineering**。
 
 Martin Fowler 的技術部落格分析師 Birgitta Böckeler 將 Harness 定義為三個核心組成：**Context Engineering（情境工程）**、**Architectural Constraints（架構約束）** 和 **Garbage Collection（垃圾回收）**。這三個組成共同構成了讓 AI agent 能夠高效、可靠地大規模工作的基礎設施。
 
