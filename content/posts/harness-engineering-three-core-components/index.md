@@ -175,7 +175,7 @@ Harness-aware linter 錯誤：
   Reference: docs/architecture/layers.md#dependency-rules
 ```
 
-這種設計讓錯誤訊息在阻擋 agent 的同時，也告訴它如何修正——**工具本身就在教導 agent**。
+這種設計讓錯誤訊息在阻擋 agent 的同時，也告訴它如何修正。**工具本身就在教導 agent**。
 
 ### 其他「品味不變量」（Taste Invariants）
 
@@ -312,13 +312,13 @@ Garbage Collection
   強化 Architectural Constraints（新增規則）
 ```
 
-這個循環讓系統具備**自我修復能力**——不需要人工介入的持續改進。
+這個循環讓系統具備**自我修復能力**，實現不需要人工介入的持續改進。
 
 ---
 
 ## 量化成果
 
-OpenAI 的實驗結果令人印象深刻：
+OpenAI 的實驗結果如下：
 
 - **程式碼規模**：超過 100 萬行（涵蓋應用邏輯、基礎設施、工具、文件）
 - **PR 產出**：約 1,500 個 PR 開啟並合併

@@ -21,7 +21,7 @@ summary: "解析 OpenAI Agents SDK 的架構、Handoffs、Guardrails 與 Tracing
 
 ### 從 Swarm 到 Agents SDK
 
-OpenAI 的 AI 代理開發歷程可以追溯至 Swarm 項目——一個專為教育和實驗設計的輕量化框架，展示了多代理協調的可行性，但缺乏生產環境所需的穩健性和觀測能力。
+OpenAI 的 AI 代理開發歷程可以追溯至 Swarm 項目，這是一個專為教育和實驗設計的輕量化框架，展示了多代理協調的可行性，但缺乏生產環境所需的穩健性和觀測能力。
 
 Agents SDK 在此基礎上進行了大幅度升級：
 
@@ -64,7 +64,7 @@ assistant = Agent(
 )
 ```
 
-**動態指令**是 Agents SDK 的一大特色——`instructions` 可以是函數，在每次執行時根據上下文動態生成提示，支援個性化代理行為。
+**動態指令**是 Agents SDK 的一大特色：`instructions` 可以是函數，在每次執行時根據上下文動態生成提示，支援個性化代理行為。
 
 ### 2. Tools（工具）
 
@@ -261,7 +261,7 @@ set_trace_processors([LogfireSpanExporter()])
 
 ### Coinbase AgentKit 整合
 
-Coinbase 利用 Agents SDK 在數小時內完成了 AgentKit 的原型開發——一個讓 AI 代理與加密錢包和鏈上活動互動的工具包。開發者將 Coinbase Developer Platform SDK 的自定義操作整合到代理中，大幅縮短了從概念到可用產品的時間。
+Coinbase 利用 Agents SDK 在數小時內完成了 AgentKit 的原型開發。AgentKit 是一個讓 AI 代理與加密錢包和鏈上活動互動的工具包，開發者將 Coinbase Developer Platform SDK 的自定義操作整合到代理中，大幅縮短了從概念到可用產品的時間。
 
 ### Box 企業搜尋
 
