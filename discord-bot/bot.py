@@ -109,7 +109,20 @@ async def research(ctx: commands.Context, *, topic: str):
     async with _research_lock:
         status_msg = await ctx.reply(f"🔍 正在研究：**{topic}**\n⏳ 這可能需要幾分鐘...")
 
-        result = await run_research(topic)
+        async def _update_progress(phase: str, elapsed: float, slug: str | None):
+            minutes = int(elapsed // 60)
+            seconds = int(elapsed % 60)
+            text = (
+                f"🔍 正在研究：**{topic}**\n"
+                f"{phase}\n"
+                f"⏱ 已經過：{minutes} 分 {seconds} 秒"
+            )
+            try:
+                await status_msg.edit(content=text)
+            except Exception:
+                pass
+
+        result = await run_research(topic, progress_callback=_update_progress)
 
         if result.success:
             _completed_slugs.add(result.slug)

@@ -3,12 +3,19 @@ import logging
 import os
 import signal
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Callable, Coroutine
 
 import config
 from prompt import build_research_prompt
 
 log = logging.getLogger(__name__)
+
+# 進度階段定義（只定義能從文件系統確實偵測到的階段）
+PHASE_WORKING = "🔍 研究與撰寫中..."
+PHASE_ARTICLE_DONE = "✅ 文章已完成，正在生成語音..."
+PHASE_AUDIO_DONE = "✅ 語音已生成，正在推送到網站..."
 
 
 @dataclass
@@ -52,7 +59,59 @@ def _kill_process_group(proc: asyncio.subprocess.Process) -> None:
             pass
 
 
-async def run_research(topic: str) -> ResearchResult:
+def _detect_phase(posts_dir: Path, known_slugs: set[str]) -> tuple[str, str | None]:
+    """掃描 content/posts/ 偵測研究進度階段。
+
+    只回報能從文件系統確實觀察到的變化：
+    - index.md 出現 → 文章已完成
+    - audio.mp3 出現 → 語音已生成
+    其餘時間統一顯示「研究與撰寫中」。
+    """
+    if not posts_dir.exists():
+        return PHASE_WORKING, None
+
+    for d in posts_dir.iterdir():
+        if not d.is_dir() or d.name.startswith("_") or d.name in known_slugs:
+            continue
+        slug = d.name
+        if (d / "audio.mp3").exists():
+            return PHASE_AUDIO_DONE, slug
+        if (d / "index.md").exists():
+            return PHASE_ARTICLE_DONE, slug
+
+    return PHASE_WORKING, None
+
+
+# 進度回調類型：async def callback(phase: str, elapsed: float, slug: str | None)
+ProgressCallback = Callable[[str, float, str | None], Coroutine]
+
+
+async def _progress_monitor(
+    posts_dir: Path,
+    known_slugs: set[str],
+    start_time: float,
+    callback: ProgressCallback,
+    interval: int = 20,
+) -> None:
+    """背景任務：定期偵測進度並透過 callback 回報。"""
+    last_phase = ""
+    while True:
+        await asyncio.sleep(interval)
+        phase, slug = _detect_phase(posts_dir, known_slugs)
+        elapsed = time.monotonic() - start_time
+        if phase != last_phase:
+            log.info("進度更新：%s (slug=%s, %.0f 秒)", phase, slug, elapsed)
+            last_phase = phase
+        try:
+            await callback(phase, elapsed, slug)
+        except Exception:
+            log.exception("進度回調失敗")
+
+
+async def run_research(
+    topic: str,
+    progress_callback: ProgressCallback | None = None,
+) -> ResearchResult:
     """呼叫 Claude CLI 執行深度研究。"""
     prompt = build_research_prompt(topic, config.TTS_VOICE)
 
@@ -71,7 +130,15 @@ async def run_research(topic: str) -> ResearchResult:
     # 清除 CLAUDECODE 環境變數，避免巢狀 session 檢查
     env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
 
+    # 記錄研究前已存在的 slug，用於偵測新文章
+    posts_dir = config.HUGO_DIR / "content" / "posts"
+    known_slugs: set[str] = set()
+    if posts_dir.exists():
+        known_slugs = {d.name for d in posts_dir.iterdir() if d.is_dir()}
+
     log.info("開始研究：%s", topic)
+
+    monitor_task: asyncio.Task | None = None
 
     try:
         proc = await asyncio.create_subprocess_exec(
@@ -83,6 +150,12 @@ async def run_research(topic: str) -> ResearchResult:
             start_new_session=True,  # 建立新進程組，方便整組清理
         )
         log.info("Claude 子進程已啟動 (PID: %d)", proc.pid)
+
+        # 啟動進度監控背景任務
+        if progress_callback:
+            monitor_task = asyncio.create_task(
+                _progress_monitor(posts_dir, known_slugs, start, progress_callback)
+            )
 
         stdout, stderr = await asyncio.wait_for(
             proc.communicate(),
@@ -114,6 +187,13 @@ async def run_research(topic: str) -> ResearchResult:
             reason="claude CLI 未找到，請確認已安裝",
             duration_seconds=0,
         )
+    finally:
+        if monitor_task:
+            monitor_task.cancel()
+            try:
+                await monitor_task
+            except asyncio.CancelledError:
+                pass
 
     elapsed = time.monotonic() - start
     output = stdout.decode(errors="replace")
