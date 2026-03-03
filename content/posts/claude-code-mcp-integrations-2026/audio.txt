@@ -1,0 +1,57 @@
+以下是『Claude Code MCP 整合爆發：從 Linear 到 Kali Linux 的執行層革命』的語音版本。
+
+2026 年 3 月初，社群媒體上開始出現大量 Claude Code 整合示範的影片：從 Linear 提取 23 個子問題、自動生成 8 頁 Gamma 簡報、從一句話產生 Facebook Ads 的 ROAS 和 CPA 報告。這些示範在工程師社群中快速傳播，讓人意識到 MCP，也就是模型上下文協議，已經從技術規格演變為可直接落地的工程基礎設施。
+
+MCP 的角色：標準化連接層
+
+MCP 是 Anthropic 於 2024 年底開源的協議，基於 JSON-RPC 2.0，定義了 AI 系統與外部工具之間的通訊方式。2026 年初，Anthropic 將其捐給由 Linux 基金會管理的 Agentic AI Foundation，Google、Microsoft、AWS、OpenAI 等公司相繼加入。
+
+協議的核心架構分為三層：第一層是 MCP Client，也就是 Claude Code 本身，作為智能決策層；第二層是 MCP Server，各工具提供的服務端，暴露 API 能力；第三層是傳輸層，推薦使用 Streamable HTTP，本地工具也可用 stdio。
+
+連接一個 MCP 服務器的指令只需一行，例如 claude mcp add 加上傳輸方式和服務器地址。認證走 OAuth 2.0，Claude Code 內建處理流程。截至 2026 年 3 月，官方 MCP 目錄已有 75 個以上的商業連接器，社群維護的服務器超過一萬個，Python 和 TypeScript SDK 月下載量合計約 9700 萬次。
+
+Linear 整合：從問題追蹤到自主執行
+
+Linear 的官方 MCP 服務器在 2025 年推出，提供完整的 GraphQL API 存取。連接後，可以直接向 Claude 下達自然語言指令，比如說「把 ENG-4521 的所有子問題整理成技術文件，然後在 GitHub 開一個 PR」。Claude 會依序查詢 Linear 取得子問題詳情、分析依賴關係、生成技術文件，再呼叫 GitHub MCP 創建 PR。
+
+其中「23 個子問題」的示範在社群廣泛流傳，核心在於 Claude 不只是列出問題，而是理解問題之間的結構關係，生成有邏輯層次的輸出。
+
+另一個典型場景是 Slack 與 Linear 的橋接。工程師 Samuel Lawrentz 展示的工作流分三步：Claude 讀取過去一段時間的 Slack 訊息，識別隱含的行動項目和決策，然後自動在 Linear 建立票券並依所有者分配。關鍵在於 Claude 把 Slack 當作第一類資料來源來讀取，而不是解析匯出的文字檔。
+
+Gamma 整合：自然語言生成簡報
+
+Gamma 的 MCP 服務器提供三個核心工具：內容生成、主題瀏覽、資料夾管理。病毒示範中的「8 頁 Gamma 簡報」場景，具體流程是：Claude 連接 Linear 讀取 roadmap 相關問題和指標，整理成結構化大綱，然後呼叫 Gamma MCP，以大綱為輸入生成簡報，並選擇適合的主題樣式。
+
+一個提示詞「幫我把 Q2 roadmap 的 Linear 問題整理成給投資人看的 8 頁簡報」，Claude 就能串起兩個 MCP 完成整個任務。目前的限制是 Gamma MCP 不支援在其他 AI 工具中直接編輯，生成後需要在 Gamma 應用程式內修改。
+
+Meta Ads 整合：廣告分析的自動化
+
+Pipeboard 等公司提供的 Meta Ads MCP 服務器，暴露了約 25 個工具，涵蓋帳戶與廣告系列管理、廣告組操作、創意管理、績效分析，以及受眾與預算管理。
+
+病毒示範的核心場景是：輸入「幫我生成 10 月客戶報告」，Claude 呼叫 Meta Ads MCP 拉取指定時段的原始資料，計算 ROAS 和 CPA 等衍生指標，生成包含圖表的報告。
+
+根據 Anthropic 客戶案例，實際生產部署的結果包括：早晨審核從 90 到 120 分鐘縮短至約 45 秒；一個 3 人團隊管理的客戶帳號從 8 個擴展至 20 個；某 SaaS 客戶月合格示範預約從 147 次增加到 231 次，而廣告支出保持不變。
+
+Kali Linux 整合：滲透測試的自然語言化
+
+2026 年 2 月 26 日，Kali Linux 宣布整合 Claude AI 的滲透測試工作流。架構分三層：UI 層是 Claude Desktop，作為自然語言介面；執行層是 Kali Linux 環境中運行的 mcp-kali-server；智能層是 Claude Sonnet，負責處理提示詞並協調工具調用。
+
+實際操作時，輸入「掃描 scanme.nmap.org 的端口並檢查是否存在 security.txt 文件」，Claude 會解釋意圖、規劃步驟，然後依序執行並回傳整合結果。
+
+安全研究人員也指出潛在風險：MCP 啟用的 AI 工作流引入了提示注入、過度授權、審計日誌不足等攻擊面。建議在生產環境中強制最小權限、驗證所有輸入，並對高風險指令要求人工確認。
+
+配置管理與作用域
+
+Claude Code 的 MCP 配置支援三種作用域：local 作用域是預設值，存在個人設定檔中，僅限當前專案使用；project 作用域則把配置存在 .mcp.json 文件並加入版控，適合團隊共用；user 作用域跨所有專案有效，適合個人通用工具。
+
+企業部署可使用 managed-mcp.json，放置於系統目錄，由 IT 管理員統一管理所有員工的可用 MCP 服務器，並支援白名單和黑名單控制。
+
+多個 MCP 服務器同時運行時，Claude Code 會自動啟用 MCP Tool Search：當工具定義超過上下文視窗的 10%，工具定義不再預先載入，而是由 Claude 在需要時動態搜尋並載入。
+
+從聊天機器人到執行層的轉變
+
+這些整合的共同特徵是：Claude 不再只是回答問題，而是作為協調者串連多個外部系統完成任務。官方文件中的一個例子完整體現了這個邏輯：找出 10 個過去 90 天未購買的客戶 Email，根據 Figma 新設計更新標準 Email 模板，建立 Gmail 草稿邀請他們參加功能反饋會議。這個指令涉及 PostgreSQL MCP、Figma MCP、Gmail MCP 三個不同服務，Claude 自主決定執行順序並整合結果。
+
+MCP 解決的核心問題是：讓 AI 系統能以標準化方式與任意外部工具通訊，而不需要為每個工具寫一套特定的整合代碼。這類似於 USB-C 對硬體介面的影響，把碎片化的特定整合，統一成一個可互操作的標準。
+
+以上就是本篇文章的語音版本，感謝收聽。
