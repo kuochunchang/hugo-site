@@ -1,0 +1,23 @@
+以下是「OpenFang：用 Rust 打造的 Agent 作業系統」的語音版本。
+
+2026 年 2 月 24 日，一個叫 OpenFang 的專案出現在 GitHub 上，四天內累積了超過四千顆星。這個數字本身並不稀奇，但它的定位卻有點不同：作者不把它稱為「agent 框架」，而是叫它「Agent Operating System」，也就是 Agent 作業系統。
+
+先說說背景。過去兩年，AI agent 框架如雨後春筍，LangChain、LangGraph、CrewAI、AutoGen 各有擁護者，但它們共享一個基本假設：agent 被人呼喚，完成任務，然後停止。這個模式適合互動式任務，但對於「讓 agent 持續監控某件事」或是「每天自動做研究並整合成報告」這類場景，現有框架的處理方式都很笨拙。你需要自己搭排程、管理狀態、處理失敗恢復。OpenFang 的切入點就在這裡：讓 agent 更像作業系統裡的背景程序，而不是等待指令的命令列工具。
+
+接下來談技術架構。OpenFang 用 Rust 撰寫，整個系統分散在 15 個 crates 裡，總計將近 14 萬行程式碼，附帶 1,731 個測試，零個 clippy 警告。編譯後輸出單一個約 32 MB 的二進制檔，不需要 Python 環境、不需要 npm、沒有外部 runtime 依賴。冷啟動時間在 180 毫秒以內，閒置記憶體佔用約 40 MB。相較之下，LangGraph 的冷啟動約需 2,500 毫秒。這個差距主要來自語言特性：Rust 沒有垃圾回收，啟動不需要 JVM 或 interpreter 初始化。
+
+每個 agent 有三種執行模式：Full 也就是完全自主、Assist 也就是建議後由人確認、以及 Observe 也就是只監控不行動。
+
+OpenFang 最特別的概念是「Hands」。它把七個預建的自主能力套件直接打包進來。第一個是 Clip，從 YouTube 影片自動剪輯垂直短片並加字幕。第二個是 Lead，每日自動發掘並評分潛在客戶資料。第三個是 Researcher，跨來源自主研究，整合成結構化報告。第四個是 Browser，網頁自動化，設有人工確認閘門，避免未授權的購買等操作。第五個是 Twitter，跨社交平台帳號自動管理。第六個是 Collector，OSINT 等級的情報監控。第七個是 Predictor，超預測引擎，輸出含信賴區間的預測結果。這些 Hands 運行在排程上，不等用戶輸入，持續建立知識圖譜並把結果推送到 dashboard。設計哲學是：人設定目標，agent 持續執行，有例外時才通知人。
+
+LLM 整合方面，OpenFang 原生支援 Anthropic、Google Gemini 和 OpenAI 相容格式三個驅動，透過 OpenAI 相容接口還可以接入 Groq、DeepSeek、Together、Ollama 等 27 個以上的提供商，模型目錄裡有超過 130 個已內建的模型定義。通訊頻道方面，40 個 channel adapter 涵蓋 Telegram、Discord、Slack、WhatsApp、Signal、Matrix、Email、Teams、IRC 等主流平台。
+
+安全架構是 OpenFang 宣傳的另一個重點。它聲稱有 16 個獨立安全層。工具程式碼在 WebAssembly 環境中執行，採用雙計量機制，防止無限迴圈和資源耗盡。每個操作都記錄在 Merkle chain 上，提供可驗證的歷史記錄。Agent manifest 使用 Ed25519 簽名，確保程式碼未被竄改。另外還有內建的 SSRF 防護和資訊流污點追蹤。
+
+和現有框架比較：LangGraph 的優勢在於圖形化狀態管理和生產環境的穩定性，CrewAI 的優勢在於角色式 agent 設計的直觀性。OpenFang 的差異化在於：零依賴部署、廣泛的通訊整合、以及 Hands 這套排程自主執行架構。安裝只需一行 curl 指令，web dashboard 在 localhost 的 4200 埠啟動。
+
+最後談限制。OpenFang 目前是 v0.1.0，上線不到兩週。1,731 個測試對 14 萬行程式碼來說比例不算高，某些邊界情況可能尚未覆蓋。15 個 crates 加 40 個 channel adapter 的維護量很大，長期更新的持續性尚待觀察。與其他框架的效能對比數字是作者自行提供，尚未有第三方獨立驗證。
+
+OpenFang 試圖解答一個具體問題：如何讓 agent 真正跑在背景而不是等待呼喚。Hands 的設計概念、零依賴單一二進制的部署方式，以及相對完整的安全架構，是它的三個明確技術特點。v0.1.0 不代表可以直接用在關鍵生產環境，但如果你在評估下一代 agent 基礎設施的可能選項，OpenFang 的架構決策值得研究。
+
+以上就是本篇文章的語音版本，感謝收聽。
