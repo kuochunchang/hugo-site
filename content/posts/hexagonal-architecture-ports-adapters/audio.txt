@@ -1,0 +1,75 @@
+Alistair Cockburn 在 1994 年首次畫出六邊形的草圖，2005 年才正式發表成文章。這個時間差說明了一件事：這個模式並非從理論推演而來，而是在多個專案中反覆碰撞同一個問題後，才逐漸形成的解法。
+
+問題本身很具體：商業邏輯和基礎設施的耦合讓程式碼難以測試。工程師寫 SQL 查詢時順手加了業務規則，Controller 裡做了只該在 Service 做的計算，一段時間後程式碼就難以獨立測試，也難以替換基礎設施。要在沒有資料庫的情況下跑測試，幾乎不可能。UI 的改動會影響到核心邏輯。更換一個第三方 API 需要動到整個應用的多個地方。
+
+Cockburn 的目標是讓應用能同等地被使用者、程式、自動測試腳本驅動，並且在與最終運行裝置和資料庫隔離的環境中開發和測試。
+
+六邊形這個形狀本身沒有特別意義，只是比方形和圓形更容易在圖上畫出多個連接點，讓人能直覺地看出應用有多個進出口。官方名稱其實是 Ports and Adapters，數字六本身沒有特殊含義。
+
+六邊形架構的基本結構由三個部分組成：應用核心、Port 和 Adapter。
+
+整個應用程式核心坐在六邊形中心。核心包含 Domain Model，也就是純業務概念，不依賴任何框架；以及 Application Services 或 Use Cases，負責協調業務流程的執行。核心對外部世界一無所知，它不知道呼叫它的是 HTTP 請求、CLI 指令還是測試框架，也不知道資料最終存在哪種資料庫。這種無知是刻意的設計。
+
+Port 是技術無關的介面，定義了應用核心與外部世界交談的協議。Port 依照方向分兩類：Driver Port 定義外部如何請求應用功能；Driven Port 定義應用需要從外部取得什麼。應用程式核心只依賴這些介面，不知道背後是哪種資料庫或外部服務。
+
+Adapter 是 Port 的具體技術實作，負責做翻譯。一個 Port 可以有多個 Adapter，對應不同技術或場景。比如同一個輸入端口，可以對應 REST Controller、CLI Handler 或 gRPC Handler 三種不同的 Adapter。Adapter 存在於六邊形外部，知道 HTTP、SQL 這些技術細節，但核心程式碼不知道也不需要知道。
+
+依賴方向的規則只有一條：所有依賴都必須指向核心。核心永遠不依賴 Adapter。
+
+我們來看一個具體的 AWS Lambda 加 DynamoDB 的實作例子。
+
+Domain Model 是純業務邏輯，沒有任何外部依賴。以 Recipient 這個類別為例，它有一個 add_reserve_slot 方法，裡面封裝了「同一天不能重複預約」的業務規則。這個規則完全在 Domain Object 內部，不會散落到 Service 層。
+
+Application Service 實作 Use Case，它透過注入的 output port 介面取得 recipient 和 slot 資料，呼叫 Domain Object 的業務方法，再透過介面儲存結果。整個過程完全不知道底層是用哪種資料庫。
+
+DynamoDB Adapter 實作 output port 介面，把 load 和 save 的呼叫翻譯成 DynamoDB 的 API 操作。Adapter 知道 DynamoDB 的細節，但核心不需要知道。
+
+Lambda Handler 扮演的角色是 Configurator，決定哪個 Adapter 搭配哪個 Port，這個接線邏輯是唯一需要知道全局結構的地方。
+
+這三種架構經常被混為一談，因為它們在目標上高度重疊：隔離業務邏輯、依賴指向核心、可測試性。三者都基於依賴倒置原則。
+
+Hexagonal Architecture 是 Cockburn 在 2005 年提出的，強調 Port 和 Adapter 的概念，把進出口明確區分為主動端和被動端，架構模型相對扁平，沒有規定核心內部的層次。
+
+Onion Architecture 是 2008 年 Jeffrey Palermo 提出的，引入了核心內部的層次，從最中心的 Domain Model，到外圍的 Domain Services、Application Services，再到 Infrastructure，用同心圓強調這個層次關係。
+
+Clean Architecture 是 2012 年 Uncle Bob 提出的，進一步精煉命名，把 Domain Model 改叫 Entities，Application Services 改叫 Use Cases，加入明確的依賴規則。這個版本的術語最成熟，社群資料也最多。
+
+實務上，複雜的企業應用通常會混用這些概念，例如用六邊形架構的 Port/Adapter 命名，同時採用 Clean Architecture 的 Use Case 概念和 DDD 的領域模型。
+
+六邊形架構本身不是 DDD，但兩者的配合相當自然。
+
+DDD 定義了如何用 Bounded Context 分割複雜領域，並用 Entity、Aggregate、Value Object、Domain Service 等模式建模。六邊形架構提供的是這些概念的結構容器：Aggregate 和 Entity 放在核心；Repository 介面作為 Driven Port，Repository 實作作為 Driven Adapter；Application Service 協調 Use Case，處理事務邊界。
+
+在微服務架構中，每個服務對應一個 Bounded Context，服務間通過 REST 或訊息佇列通訊，這些通訊協定由各自的 Adapter 處理，核心不感知。
+
+六邊形架構最直接的工程收益在於測試。
+
+核心的單元測試：Domain Model 和 Use Case 不依賴任何基礎設施，可以純粹用 unit test 覆蓋，執行速度快。測試核心業務邏輯時，Repository 可以用記憶體實作替換，不需要 mock 框架，也不需要跑資料庫。
+
+Adapter 的整合測試：Adapter 的功能是翻譯，這部分的測試需要真實的外部依賴，但範圍非常明確，不需要啟動整個應用。也可以對每個 Adapter 實作跑相同的契約測試，確保它們都正確實作 Port 的行為。
+
+端對端測試的範圍可以大幅縮減，只需驗證系統組裝正確，因為核心和 Adapter 都已分別被測試覆蓋。
+
+適合採用這個架構的情況：業務邏輯複雜，預期生命週期數年以上；需要頻繁替換技術棧，比如資料庫遷移或框架升級；多個入口共用相同業務邏輯；需要完整的自動化測試覆蓋；或是結合 DDD 做 Bounded Context 切分。
+
+不適合的情況：簡單 CRUD 應用，業務規則寥寥可數；短期項目或 MVP；或是團隊對架構概念還不熟悉，引入成本超過收益。
+
+這個架構有幾個常見的陷阱需要注意。
+
+Port 設計不應該以工具 API 為基準。Driven Port 應該用應用語言描述核心的需求，而不是複製外部工具的 API。如果 Repository 的方法設計和 ORM 的方法簽名一模一樣，那這個 Port 就沒有起到隔離作用。
+
+業務邏輯不應該滲透進 Adapter。Adapter 的職責只是翻譯，業務判斷不應該出現在這裡。
+
+資料庫優先設計是另一個常見問題。先設計資料庫 schema，再根據 schema 定義 Domain Model，結果 Domain Model 被資料庫結構污染。正確順序是先定義 Use Case 和 Port，資料庫 schema 是最後才決定的實作細節。
+
+貧血 Domain Model 是指 Domain Object 只有 getter 和 setter，業務邏輯全部散落在 Application Service。業務規則應該封裝在 Domain Object 的方法裡，不是塞進 Service 層。
+
+驗證層次也要注意：核心必須自己驗證資料有效性，不能依賴 UI 或 REST 層的驗證，因為應用可能有多個 Driver Adapter，只有核心的驗證才能保證任何進入點的資料都合法。
+
+六邊形架構的核心貢獻不是六邊形這個形狀，而是把「哪些東西應該屬於應用核心」和「哪些東西是外部技術細節」的邊界概念化，並用 Port 和 Adapter 給這兩類概念命名。
+
+命名很重要。有了「Port」這個詞，工程師在 code review 時能明確指出「這個介面應該在核心定義，不是 Adapter 定義」；有了「Driver/Driven」的區分，能清楚討論應用的各個進出口。
+
+這個架構在微服務盛行的今天特別適用，因為每個服務天生就需要管理多個外部依賴，而 Port/Adapter 模式提供了一致的方式來組織這種複雜度。核心挑戰不是技術，而是紀律：長期維持邊界，不讓業務邏輯滲透到技術層，不讓技術細節污染業務核心。
+
+2024 年 Cockburn 和合著者共同出版了 Hexagonal Architecture Explained，是對這個二十年前概念的系統性整理。這個架構不綁定任何語言或框架，Java、Python、Go 都可以實作，描述的問題從來沒有消失過。
