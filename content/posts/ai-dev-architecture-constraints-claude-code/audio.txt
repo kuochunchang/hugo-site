@@ -1,0 +1,57 @@
+有一篇文章討論 AI 輔助開發中被忽略的架構問題，它指出了一個核心矛盾：TDD、BDD、SDD 這些主流方法論，都假設架構已經確定了，但 AI 工具在實際操作中，會做出隱性的架構決策。技術選型會因對話輪次不同而飄移，模組邊界會因快速迭代而被侵蝕，技術債則在功能看起來正常的外表下靜默累積。
+
+解法不是期待 AI 自動補上架構空白，而是把架構意圖編碼化，讓機器可以讀取和遵循。Claude Code 的生態系統提供了一組機制，包括 Skills、Subagents、Hooks，加上 CLAUDE.md 配置，可以組合成不同強度的架構約束層。
+
+原文描述的三個具體失控點，對應到不同的工具解法。技術選型飄移，用 CLAUDE.md 鎖定加上 ADR Skills 來處理。模組邊界侵蝕，用邊界稽核 Skills 加上 PreToolUse Hooks 來防止。技術債靜默累積，則靠技術債掃描 Skills 加上 Stop Hooks 來偵測。
+
+在四層機制的分工上，CLAUDE.md 是靜態架構知識的持久化載體，每個 session 開始時自動載入。Skills 是情境感知的架構指引，在相關任務觸發時自動注入。Subagents 在獨立的 context window 執行，扮演專門審查者的角色，避免 context poisoning。Hooks 是生命週期事件的強制執行點，無論 AI 做什麼決定都會觸發。
+
+簡單說，Skills 決定 AI 應該知道什麼，Subagents 決定在哪裡執行工作，Hooks 決定何時強制執行規則，CLAUDE.md 決定始終有效的靜態約束。
+
+把架構約束寫進 CLAUDE.md 是成本最低的起點，適合放置不常變動的架構知識，比如模組邊界定義、禁止的依賴方向、技術選型記錄，以及命名規範。Anthropic 建議 CLAUDE.md 維持在五十到一百行以內，對真正重要的規則標注 IMPORTANT 或 YOU MUST NOT。超過兩百行的內容會被截斷，大型專案的架構約束可以拆分到子目錄各自的 CLAUDE.md。
+
+有一個值得注意的特性：CLAUDE.md 在 context compaction，也就是上下文壓縮之後，仍會透過 SessionStart compact hook 重新注入，這直接解決了 AI 無法感知超出 context window 的系統結構這個問題。
+
+不過 CLAUDE.md 本質上是建議性的，AI 仍然可以在 session 中做出偏離的決定。要從建議升級到強制，需要 Hooks。
+
+說到 ADR，也就是架構決策記錄，這是架構文件化的標準做法。AI 快速迭代時，架構決策可能在 code review 之前就已擴散，所以需要工具輔助。
+
+目前 Claude Code 生態系統中有幾個可用的 ADR skills。第一個是 blueprint-derive-adr，由 laurigates 開發，能自動分析現有專案的代碼結構、依賴和配置，反向推導出 ADR。它的工作流程分四個階段：Discovery 分析目錄結構和依賴關係；Conflict Analysis 掃描現有 ADR 計算衝突分數，高分衝突需要人工決策；ADR Generation 以 MADR 格式產生完整記錄；最後 Relationship Updates 雙向更新被取代的 ADR。這個工具對既有系統特別有用，可以把多年來隱性的技術選型決定，轉換為機器可讀的記錄。
+
+第二個是 melodic-software 的 adr-management，提供標準 ADR 生命週期管理，狀態從 Proposed 到 Accepted 到 Deprecated 到 Superseded。支援多種範本格式，但這個 skill 在社群評分系統中的 health score 只有 44 分，生產環境使用前建議自行驗證。
+
+第三個是 Dave's Claude Code Skills，提供八個架構類 skills，包括 ADR 建立、多維度變更影響分析、架構方案比較、非功能需求擷取、架構報告生成、依賴關係圖，以及多格式架構圖和圖表審查。
+
+在架構稽核 Skills 方面，levnikolaevich 提供了一組靜態分析 skills。layer-boundary-auditor 偵測元件跨越架構層的違規，找出 business logic 直接接觸 database schema 的情況。api-contract-auditor 識別層間資料傳輸洩漏，驗證 DTO 的正確使用。dependency-graph-auditor 計算耦合指標，偵測循環依賴，這是模組邊界侵蝕最常見的技術表現。project-structure-auditor 驗證實體檔案組織是否符合 clean architecture 原則。pattern-evolution-auditor 使用四維評分模型追蹤設計模式在程式碼庫的演化。
+
+另外，front-depiction 的 architecture-analysis skill 支援 blast-radius 評估，也就是修改前預測影響範圍，把架構驗證從 code review 時的人工判斷，轉變為可在修改前執行的預測步驟。
+
+Hooks 是另一個層次，確定性的架構守衛。Claude Code hooks 的核心哲學是：給確定性系統的確定性控制，而非依賴 LLM 選擇是否遵守規則。
+
+PreToolUse 是唯一可以阻止動作的 hook 事件，exit code 2 直接封鎖工具呼叫。舉例來說，可以寫一個 shell script，如果 AI 試圖在 client component 中引用 server-only 模組，就直接攔截並回傳錯誤訊息。從 v2.0.10 起，PreToolUse hooks 還可以修改工具的輸入參數，不只是阻止，還可以自動修正。
+
+PostToolUse 在工具執行後觸發，無法撤銷動作，但可以在每次修改後自動執行架構驗證，比如自動跑 TypeScript 型別檢查。
+
+Stop hook 在 Claude 完成回應時觸發，可以讓子 agent 在 Claude 宣告完成之前，實際執行架構檢查，若有違規才允許結束。
+
+SessionStart compact 這個 hook 在 context 壓縮後重新注入架構文件，讓 AI 在長對話中始終保有架構約束。
+
+Prompt-based hooks 則填補靜態分析無法覆蓋的語意層面，由 Claude Haiku 模型在工具呼叫前後進行語意判斷，例如檢查函式是否違反單一職責原則。
+
+在 Subagents 方面，ZacheryGlass 設計了一個 architecture-reviewer agent，在獨立的 context window 執行，檢查 Presentation、Business Logic、Data Access 各層之間的邊界，以及是否存在 leaking abstraction。在獨立 context window 執行的優勢是避免 context poisoning，詳細的實作細節不會污染架構審查的判斷，道理和人工 code review 相同。Hooks 可以定義在 subagent 的 markdown 檔案中，只在該 subagent 活躍期間生效。
+
+對於複雜的多 agent 系統，Ruflo 提供了 spec-first 的架構優先編排框架。它的分層 orchestration 從 User 到 Ruflo 到 Router 到 Swarm 到 Agents 到 Memory，每層有明確職責。ADR 直接影響 agent 行為，不只是文件，而是執行時的約束來源。重要決策需要多個 agent 投票，避免單一 agent 的架構創意。Ruflo 透過共享向量記憶體和 consensus 機制，部分解決了跨 context 的一致性問題。
+
+在實際應用場景上，既有專案導入 AI 開發時，可以先用 blueprint-derive-adr 反向推導隱含架構決策，生成 ADR 文件庫，再把關鍵約束寫入 CLAUDE.md，設置 PreToolUse hooks 防止跨模組邊界修改。
+
+架構重構規劃時，可以在 Plan Mode 下運行 architecture-analysis skill，不修改代碼只分析狀態，配合 Scenario Compare skill 評估不同重構方案的風險。
+
+日常開發中，可以設置 PostToolUse hooks 在每次修改後自動執行 layer-boundary-auditor，搭配 Architecture Reviewer subagent 在 PR 前做架構審查。
+
+新功能設計時，先讓 AI 寫 ADR 草稿，評審通過後再開始實作，terrylica 的 itp plugin 提供了這個四階段工作流的完整實現。
+
+最後談幾個值得注意的限制。Skills 無法保證執行，因為依賴 Claude 的判斷，不像 hooks 有確定性。PreToolUse hooks 在非互動模式下不觸發，批次執行時需另行處理。最重要的是，架構決策的初始品質仍取決於人的判斷，一個設計不良的 ADR 被強制執行，只會更快速地製造技術債。當架構需要調整時，ADR、CLAUDE.md 和 Hooks 都要同步更新，這個同步過程本身就是管理負擔。
+
+總結來說，Claude Code 生態目前提供了從 CLAUDE.md 的建議性靜態約束，到 ADR Skills 的決策歷史管理，到架構稽核 Skills 的靜態分析，到 Hooks 的確定性強制執行，到 Subagents 的獨立審查視角，再到 Ruflo 的多 agent 一致性，這一整條工具鏈。
+
+這些工具把架構約束從寫在文件裡的原則，轉化為 AI 每次操作都會面對的執行機制。但差距仍然存在：架構的語意理解層面，例如業務邊界的正確性，仍需要人工判斷。目前的工具只能做到結構性規則的機械驗證。
