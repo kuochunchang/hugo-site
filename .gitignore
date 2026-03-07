@@ -4,4 +4,5 @@ public/
 # Discord bot
 discord-bot/.env
 discord-bot/.venv/
+discord-bot/logs/
 __pycache__/
