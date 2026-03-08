@@ -1,0 +1,67 @@
+軟體架構的核心問題，始終是如何管理依賴關係。傳統的分層架構中，UI 依賴業務邏輯，業務邏輯依賴資料存取層，最終一切都壓在資料庫上。這個模型直觀，但在實際系統演化過程中，資料庫技術、ORM 框架、訊息佇列這些基礎設施的細節，會不斷向業務邏輯滲透，形成難以切斷的耦合。
+
+Onion Architecture 在 2008 年提出，Clean Architecture 在 2012 年提出，兩者都是為了解決這個問題。出發點相似，核心原則幾乎一致，但在層次命名和關注重點上有所差異。
+
+第一個部分，Onion Architecture，以領域模型為核心。
+
+Jeffrey Palermo 在 2008 年提出 Onion Architecture，在六邊形架構的基礎上，將應用程式內部的業務邏輯劃分成更細緻的層次。
+
+層次從內到外分別是：最核心的 Domain Model，包含業務實體和值對象，代表業務的真實狀態。往外一層是 Domain Services，存放無法歸屬於單一實體的業務邏輯，但仍屬純業務規則。再往外是 Application Services，負責協調多個 Domain Service，構成應用程式的用途邊界，本身不含業務邏輯。最外層是 Infrastructure、UI 和測試，放所有技術細節，像是資料庫、HTTP 接口、訊息佇列。
+
+基本規則只有一條：外層可以依賴內層，內層不可以知道外層的存在。
+
+Palermo 明確說過：資料庫不是核心，它是外部的。資料庫只是外層的一種實作，內層透過 Repository 介面存取資料，介面定義在內層，實作在外層，透過依賴注入在執行期連接起來。
+
+第二個部分，Clean Architecture，以 Use Case 為核心。
+
+Robert C. Martin，也就是大家熟知的 Uncle Bob，在 2012 年提出 Clean Architecture，明確說它整合了六邊形架構、Onion Architecture 等多種架構的共同原則。
+
+四層結構從內到外：Entities，放企業級業務規則，最穩定，可以跨多個應用程式共用。Use Cases，放應用程式特定的業務規則，描述系統針對特定場景的行為。Interface Adapters，負責把 Use Cases 和 Entities 的資料格式，轉換成外部系統能用的格式，MVC 的 Controller 和 Presenter 都在這層。最外層是 Frameworks and Drivers，放所有技術細節，Web 框架、資料庫、外部 API。
+
+Clean Architecture 最核心的規定叫做 Dependency Rule：原始碼的依賴只能向內指。任何內層程式碼，不得提及任何外層的名稱，不論是函式名、類別名還是資料結構名稱。
+
+Clean Architecture 還在 Use Case 層引入了 Input Port 和 Output Port 的概念。Controller 透過 Input Port 呼叫 Use Case Interactor，Interactor 再透過 Output Port 把結果傳給 Presenter。這讓 Use Case 不依賴任何呈現層或 UI 框架，透過依賴反轉讓控制流能從外到內再到外。
+
+第三個部分，兩者的對應關係。
+
+Onion 的 Domain Model 對應 Clean 的 Entities，都是核心業務規則。Application Services 對應 Use Cases，負責應用程式行為和業務流程協調。Infrastructure 對應 Interface Adapters 加上 Frameworks and Drivers，放技術實作。
+
+有一個細微差異：Onion 的 Application Services 被定義為純粹的協調者，不含業務邏輯。而 Clean 的 Use Cases 層則明確承載應用程式特定的業務規則，不只是協調，而是定義系統在這個場景下應該怎麼做。
+
+命名語意上也有差異。Clean Architecture 刻意用 Use Cases 這個詞，讓架構能直接呼應功能需求，也就是 Uncle Bob 說的 Screaming Architecture，看到資料夾結構就知道這個系統是做什麼的，而不是看到 Controllers、Models、Services 這些通用技術名詞。
+
+第四個部分，共同的根基。
+
+兩者都建立在依賴反轉原則的架構層級應用上。傳統分層架構，高層模組直接依賴低層實作，比如直接 new 一個 SqlRepository。Onion 與 Clean 都要求，高層模組定義介面，低層模組實作介面，執行期透過依賴注入組裝。這讓核心業務邏輯可以在沒有真實資料庫的環境下單獨測試。
+
+可測試性是兩種架構共同追求的目標：業務邏輯不需啟動 Web Server 即可測試，不需連接實際資料庫即可測試，UI 可以在不修改業務邏輯的前提下替換，資料庫可以從 PostgreSQL 換成 MongoDB，業務層不受影響。
+
+第五個部分，演化脈絡。
+
+這三個模式並非獨立發明，而是同一類思路在不同時期的表述。2005 年，Alistair Cockburn 提出六邊形架構，把應用程式核心與外部世界分離。2008 年，Jeffrey Palermo 提出 Onion Architecture，在六邊形架構的核心內部加入 DDD 的層次分法。2012 年，Uncle Bob 提出 Clean Architecture，整合前述模式，強調 Use Case 的明確性，並提出具體的四層命名。
+
+三者都承認同一個問題，也都用「依賴向內」作為解法。
+
+第六個部分，實際選擇的考量。
+
+業務規則複雜、有豐富領域邏輯的系統，比如金融、保險、電商訂單流程，Onion 的 Domain Model 中心化設計更適合，能配合 DDD 的 Aggregate 和 Value Object。
+
+若系統核心價值在「系統能做哪些事」，希望在代碼結構上就能體現功能邊界，Clean Architecture 的 Use Cases 層命名更直接。
+
+Onion 對有 DDD 背景的團隊較為直覺；Clean 的四層結構文件更多，對沒有 DDD 背景的團隊可能更容易入門。
+
+在微服務架構中，每個服務的業務範圍已經很小，兩者差異更加模糊，此時主要是風格偏好。
+
+最後，常見的誤用有三個。
+
+第一，強行技術分層而非按業務邊界切分。把所有 Entity 放在同一目錄、所有 Repository 放在另一目錄，這是技術分層，不是業務邊界。更好的做法是按 Bounded Context 或業務能力組織模組，每個模組內部才按層次分。
+
+第二，在 Application Services 或 Use Cases 層承載業務邏輯。這層的職責是協調，不是計算。若業務規則寫在這裡，Domain Model 就退化成純資料容器，失去架構設計的意義。
+
+第三，Repository 介面放在錯誤位置。介面應定義在核心層，實作放在外層。反過來做就破壞了依賴規則。
+
+Onion Architecture 與 Clean Architecture 本質上解決同一個問題，採用相同的根本手段。兩者差異更多是在強調重點：Onion 強調以 Domain Model 為核心；Clean 強調 Use Cases 的明確性。
+
+在實務中，許多專案會混用兩者的概念，例如採用 Clean Architecture 的四層命名，但在 Entities 層引入 DDD 的 Aggregate 設計。這種融合是合理的，因為兩個架構模式的根基一致。
+
+選擇哪個架構，取決於業務複雜度、團隊背景、系統規模。但有一點是確定的：無論名字叫什麼，核心業務邏輯不依賴任何外部技術細節，這個原則是讓系統保持長期可維護的關鍵。
