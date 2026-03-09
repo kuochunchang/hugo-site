@@ -2,7 +2,7 @@
 title: "單一代理 + MCP 與 AI 蜂群：兩種架構的本質差異與選型"
 date: 2026-03-06
 draft: false
-tags: [AI代理, MCP, 多代理系統, 架構設計, 蜂群]
+tags: ["AI Agent", "MCP", "Multi-Agent", "Software Architecture", "Swarm"]
 summary: "一個代理配備 MCP 工具，和一群代理協作，本質是垂直擴展和水平擴展的選擇。文章分析兩種架構的認知差異、實測數據、選型條件和混合策略。"
 ---
 

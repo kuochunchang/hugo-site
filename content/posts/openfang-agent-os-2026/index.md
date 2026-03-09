@@ -2,7 +2,7 @@
 title: "OpenFang：用 Rust 構建的開源 Agent 作業系統"
 date: 2026-03-05
 draft: false
-tags: ["AI Agent", "Rust", "開源", "自主代理", "LLM"]
+tags: ["AI Agent", "Rust", "Open Source", "LLM"]
 summary: "OpenFang 是一套以 Rust 撰寫的開源 Agent 作業系統，137K 行程式碼編譯成 32MB 單一二進位檔，提供 7 個自主 Hands、16 層安全機制與 40 個通訊通道，試圖重新定義 AI Agent 的部署模式。"
 ---
 

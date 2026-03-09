@@ -2,7 +2,7 @@
 title: "AI 時代的工程師分化：差異從哪裡來，又如何縮短差距"
 date: 2026-03-05
 draft: false
-tags: ["AI", "軟體工程", "職涯發展", "開發者工具", "技術能力"]
+tags: ["LLM", "Software Engineering", "Career Development", "Developer Tools", "Developer Skills"]
 summary: "同樣使用 AI 工具，為什麼資深工程師的產出遠多於初級工程師？本文分析不同等級、不同專業方向的開發者在 AI 協作中的真實差距，並提出具體的成長路徑。"
 ---
 

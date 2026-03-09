@@ -2,7 +2,7 @@
 title: "當任何人都能用 AI 寫程式：非技術人員與專業開發者所建構系統的本質差異"
 date: 2026-03-05
 draft: false
-tags: ["AI", "vibe coding", "軟體工程", "資訊安全", "技術債"]
+tags: ["Vibe Coding", "Software Engineering", "Security", "Tech Debt"]
 summary: "AI 讓非技術人員也能建構運作中的系統，但這些系統與專業開發者的作品在安全性、架構、可維護性上存在根本性的差距。"
 ---
 

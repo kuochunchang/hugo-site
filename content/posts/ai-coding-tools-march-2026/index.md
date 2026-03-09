@@ -2,7 +2,7 @@
 title: "AI 編程工具格局：2026 年 3 月的幾個關鍵轉折"
 date: 2026-03-07
 draft: false
-tags: ["Cursor", "Claude Code", "MCP", "AI安全", "軟體開發"]
+tags: ["Cursor", "Claude Code", "MCP", "Security", "Software Development"]
 summary: "Cursor Automations、MCP 標準化、Anthropic 技能研究、系統提示詞洩漏與企業 agent 部署落差——2026 年 3 月第一週的幾個值得記錄的節點。"
 ---
 

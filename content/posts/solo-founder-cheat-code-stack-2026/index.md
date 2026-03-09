@@ -2,7 +2,7 @@
 title: "個人新創作弊表：零前期成本 SaaS 堆棧的真實結構"
 date: 2026-03-05
 draft: false
-tags: ["SaaS", "個人創辦人", "工具堆棧", "產品開發", "Supabase"]
+tags: ["SaaS", "Solo Founder", "Tech Stack", "Product Development", "Supabase"]
 summary: "2026 年 3 月在 X 上廣泛流傳的「個人創辦人作弊表」，整合了十個工具聲稱預收入階段月成本為零——本文拆解每個工具的免費層邊界、協作架構，以及這個說法成立的前提條件。"
 ---
 

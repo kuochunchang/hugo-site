@@ -2,7 +2,7 @@
 title: "把架構意圖編碼化：Claude Code 生態的架構支援工具"
 date: 2026-03-07
 draft: false
-tags: [claude-code, 軟體架構, ADR, hooks, AI輔助開發]
+tags: ["Claude Code", "Software Architecture", "ADR", "Hooks", "AI-Assisted Development"]
 summary: "整理 Claude Code 生態中現有的 skills、hooks 與 subagents，說明如何把架構約束從文件轉化為 AI 每次操作都面對的執行機制。"
 ---
 

@@ -2,7 +2,7 @@
 title: "Claude Code MCP 整合爆發：從 Linear 到 Kali Linux 的執行層革命"
 date: 2026-03-04
 draft: false
-tags: ["Claude Code", "MCP", "AI Agent", "工作流程自動化", "模型上下文協議"]
+tags: ["Claude Code", "MCP", "AI Agent", "Workflow Automation"]
 summary: "2026 年 3 月，Claude Code 的 MCP 整合出現爆發式增長，連接 Linear、Gamma、Slack、Meta Ads 等工具的病毒式示範，揭示了 AI 從聊天機器人轉向自主執行層的實際路徑。"
 ---
 

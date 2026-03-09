@@ -2,7 +2,7 @@
 title: "Harness Engineering 完整指南：AI 時代軟體工程的典範轉移"
 date: 2026-03-02
 draft: false
-tags: ["Harness Engineering", "AI Agent", "Context Engineering", "軟體架構", "OpenAI", "Codex", "DevOps", "LLM"]
+tags: ["Harness Engineering", "AI Agent", "Context Engineering", "Software Architecture", "OpenAI", "Codex", "DevOps", "LLM"]
 summary: "完整彙整 Harness Engineering 的所有面向——從 OpenAI 百萬行代碼實驗、五大核心原則、三大核心組成，到業界實踐、量化成果與實施路徑。涵蓋具體程式碼範例、架構圖表與真實案例。"
 sources:
   - harness-engineering-five-core-principles-2026/index.md

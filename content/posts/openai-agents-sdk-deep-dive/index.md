@@ -2,7 +2,7 @@
 title: "OpenAI Agents SDK：核心架構、Handoffs 與生產實踐"
 date: 2026-03-01
 draft: false
-tags: ["OpenAI", "AI Agents", "LLM", "Python", "多代理系統"]
+tags: ["OpenAI", "AI Agent", "LLM", "Python", "Multi-Agent"]
 summary: "解析 OpenAI Agents SDK 的架構、Handoffs、Guardrails 與 Tracing，並與 LangChain、CrewAI、LangGraph 比較。"
 ---
 

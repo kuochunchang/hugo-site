@@ -2,7 +2,7 @@
 title: "AI 熱門議題日報 — 2026-03-01"
 date: 2026-03-01
 draft: false
-tags: ["AI", "daily-report"]
+tags: ["Daily Report"]
 categories: ["reports"]
 lang: "zh"
 description: "AI 產業趨勢每日分析報告 (繁體中文)"

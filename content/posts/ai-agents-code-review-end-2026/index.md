@@ -2,7 +2,7 @@
 title: "代理工程的終點：程式碼審查能被消滅嗎？"
 date: 2026-03-04
 draft: false
-tags: ["AI Agent", "Code Review", "軟體工程", "自動化", "形式驗證"]
+tags: ["AI Agent", "Code Review", "Software Engineering", "Automation", "Formal Verification"]
 summary: "AI 代理大量湧入開發流程，卻讓程式碼審查負擔加倍。本文分析三條通往「消滅審查」的技術路徑，以及為何這個目標至今仍未實現。"
 ---
 

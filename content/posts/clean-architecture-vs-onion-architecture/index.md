@@ -2,7 +2,7 @@
 title: "Clean Architecture 與 Onion Architecture：同源異流的架構哲學"
 date: 2026-03-09
 draft: false
-tags: ["架構設計", "Clean Architecture", "Onion Architecture", "DDD", "軟體工程"]
+tags: ["Software Architecture", "Clean Architecture", "Onion Architecture", "DDD", "Software Engineering"]
 summary: "Onion Architecture 與 Clean Architecture 解決同一個問題，採用相同的核心手段，但在層次命名與關注重點上有所差異。"
 ---
 

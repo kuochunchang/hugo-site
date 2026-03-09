@@ -2,7 +2,7 @@
 title: "AI Builder 是一種角色，更是一種思維方式"
 date: 2026-03-08
 draft: false
-tags: [AI, 軟體工程, 產品開發, Builder, Vibe Coding]
+tags: ["AI Builder", "Software Engineering", "Product Development", "Vibe Coding"]
 summary: "從 LinkedIn 廢除 APM 計畫到 Meta PM 自稱 AI builder，分析這個新型角色的能力組合、工作姿態，以及它如何改變「誰能做軟體」的基本假設。"
 ---
 

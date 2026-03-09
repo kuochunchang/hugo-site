@@ -2,7 +2,7 @@
 title: "AI 輔助開發的方法論缺口：TDD、BDD、SDD 之外，架構在哪裡？"
 date: 2026-03-06
 draft: false
-tags: ["AI 輔助開發", "軟體架構", "SDD", "TDD", "技術債"]
+tags: ["AI-Assisted Development", "Software Architecture", "SDD", "TDD", "Tech Debt"]
 summary: "TDD、BDD、SDD 各自解決了函數、行為、規格層面的問題，但都預設了有人知道系統應該長什麼樣——而這正是 AI 輔助開發最容易被忽視的前提。"
 ---
 

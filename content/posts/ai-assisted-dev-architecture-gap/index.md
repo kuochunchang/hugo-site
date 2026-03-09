@@ -2,7 +2,7 @@
 title: "AI 輔助開發的方法論缺口：TDD、BDD、SDD 之外，架構在哪裡？"
 date: 2026-03-06
 draft: false
-tags: ["AI開發", "軟體架構", "TDD", "ADR", "軟體工程"]
+tags: ["AI-Assisted Development", "Software Architecture", "TDD", "ADR", "Software Engineering"]
 summary: "TDD、BDD、SDD 都預設架構已定，但 AI 輔助開發中這個預設往往不成立——探討如何用 ADR、Architecture Lock File、Architecture as Code 補上這個缺口。"
 ---
 

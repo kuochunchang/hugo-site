@@ -2,7 +2,7 @@
 title: "Code Review 已死：AI 時代的程式碼審查困境與出路"
 date: 2026-03-04
 draft: false
-tags: ["AI", "Code Review", "軟體工程", "Spec-Driven Development", "AI Agents"]
+tags: ["AI Agent", "Code Review", "Software Engineering", "Spec-Driven Development"]
 summary: "當 AI 讓程式碼產出速度提升 21%，PR 審查時間卻暴增 91%，傳統 Code Review 的模式正在崩潰，而答案不是更快地審查程式碼，而是把人的判斷移到上游。"
 ---
 

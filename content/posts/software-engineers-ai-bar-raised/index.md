@@ -2,7 +2,7 @@
 title: "軟體工程師不會消失，但門檻正在大幅提高"
 date: 2026-03-05
 draft: false
-tags: ["AI", "軟體工程", "職涯", "技術趨勢", "就業市場"]
+tags: ["LLM", "Software Engineering", "Career Development", "Tech Trends", "Job Market"]
 summary: "AI 沒有消滅軟體工程師這個職業，但它正在重新定義什麼叫做「夠格」的工程師——入門門檻上移，核心能力要求轉向系統設計、安全審查與架構判斷。"
 ---
 

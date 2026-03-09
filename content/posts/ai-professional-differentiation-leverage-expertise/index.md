@@ -2,7 +2,7 @@
 title: "AI 放大了什麼：不同專業開發者的差距，以及如何成為更好的工作者"
 date: 2026-03-05
 draft: false
-tags: ["AI", "軟體工程", "職涯發展", "工程師技能", "Prompt Engineering"]
+tags: ["LLM", "Software Engineering", "Career Development", "Developer Skills", "Prompt Engineering"]
 summary: "AI 工具在不同專業開發者之間的效果差異極大，資深工程師的生產力提升是初階工程師的兩倍以上——本文分析差距的根源，並提出具體的提升路徑。"
 ---
 

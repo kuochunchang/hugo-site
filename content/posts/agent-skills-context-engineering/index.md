@@ -2,7 +2,7 @@
 title: "Agent Skills for Context Engineering 分析報告"
 date: 2026-03-01
 draft: false
-tags: ["AI", "Agent", "Context Engineering", "LLM"]
+tags: ["AI Agent", "Context Engineering", "LLM"]
 summary: "系統化分析 Agent Skills for Context Engineering 專案，涵蓋上下文工程理論、技能架構、實戰案例與核心洞察。"
 ---
 

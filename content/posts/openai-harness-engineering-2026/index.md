@@ -2,7 +2,7 @@
 title: "Harness Engineering：當 AI 寫下百萬行代碼，工程師的角色如何轉變"
 date: 2026-03-01
 draft: false
-tags: ["AI Agent", "Codex", "OpenAI", "軟體工程", "LLM"]
+tags: ["AI Agent", "Codex", "OpenAI", "Software Engineering", "LLM"]
 summary: "OpenAI 提出 Harness Engineering 概念，說明在 AI 代理主導開發的時代，工程師的核心職責從寫代碼轉為設計環境、定義意圖與建立回饋迴路。"
 ---
 

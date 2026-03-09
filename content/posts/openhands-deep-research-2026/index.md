@@ -2,7 +2,7 @@
 title: "OpenHands：開源 AI 編程代理平台的架構與實力"
 date: 2026-03-01
 draft: false
-tags: ["AI", "Agent", "OpenHands", "Coding Agent", "Open Source", "SWE-Bench"]
+tags: ["AI Agent", "OpenHands", "Open Source", "SWE-Bench"]
 summary: "研究 OpenHands（前身 OpenDevin）的架構設計、核心能力、基準測試與競品比較。"
 ---
 

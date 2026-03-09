@@ -2,7 +2,7 @@
 title: "區塊鏈技術在 AI 代理身分識別的應用：現況與展望"
 date: 2026-03-06
 draft: false
-tags: [區塊鏈, AI代理, 身分識別, DID, 可驗證憑證]
+tags: ["Blockchain", "AI Agent", "Identity", "DID", "Verifiable Credentials"]
 summary: "區塊鏈技術如何解決 AI 代理的身分識別問題，涵蓋 DID/VC 標準、ERC-8004、KYA 框架及主要實作案例的現況分析。"
 ---
 

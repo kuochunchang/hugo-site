@@ -2,7 +2,7 @@
 title: "AI 代理的身分識別：加密技術的現況與走向"
 date: 2026-03-06
 draft: false
-tags: [AI代理, 身分識別, PKI, 加密技術, 零信任]
+tags: ["AI Agent", "Identity", "PKI", "Cryptography", "Zero Trust"]
 summary: "梳理 PKI、SPIFFE、DIDs/VCs、OAuth 2.0 擴充等方案如何解決 AI 代理的身分識別問題，以及後量子密碼學帶來的遷移壓力。"
 ---
 

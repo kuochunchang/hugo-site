@@ -2,7 +2,7 @@
 title: "六邊形架構與 DDD：讓業務邏輯成為最穩定的代碼"
 date: 2026-03-09
 draft: false
-tags: [架構設計, DDD, 六邊形架構, 軟體工程, 設計模式]
+tags: ["Software Architecture", "DDD", "Hexagonal Architecture", "Software Engineering", "Design Patterns"]
 summary: "六邊形架構定義邊界如何建立、依賴如何流向，DDD 定義邊界內部的業務模型如何設計，兩者組合形成讓業務邏輯成為系統中最穩定代碼的設計方法。"
 ---
 

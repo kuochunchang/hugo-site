@@ -2,7 +2,7 @@
 title: "Python Protocol 與 ABC：介面設計的兩種哲學"
 date: 2026-03-07
 draft: false
-tags: [python, typing, protocol, abc, type-hints]
+tags: ["Python", "Type System", "Protocol", "ABC"]
 summary: "ABC 走名義型別路徑，Protocol 走結構型別路徑，兩者解決的是不同層面的問題，理解差異才能在系統設計時做出有意識的選擇。"
 ---
 

@@ -2,7 +2,7 @@
 title: "Playwright Agents 與 Claude Code：三個專用子代理自動化 E2E 測試"
 date: 2026-03-04
 draft: false
-tags: ["Playwright", "Claude Code", "E2E Testing", "AI Agent", "測試自動化"]
+tags: ["Playwright", "Claude Code", "E2E Testing", "AI Agent", "Test Automation"]
 summary: "Playwright 1.56 引入三個專用 AI 代理，與 Claude Code 子代理架構整合，自動完成測試規劃、程式碼生成和故障修復的完整工作流程。"
 ---
 

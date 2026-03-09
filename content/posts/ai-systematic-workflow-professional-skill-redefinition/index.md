@@ -2,7 +2,7 @@
 title: "當 AI 接管實作：系統化工作流如何重塑開發者的核心競爭力"
 date: 2026-03-05
 draft: false
-tags: ["AI開發", "Vibe Coding", "Spec-Driven Development", "軟體工程", "工程師技能"]
+tags: ["AI-Assisted Development", "Vibe Coding", "Spec-Driven Development", "Software Engineering", "Developer Skills"]
 summary: "AI 不只是讓非技術人員能寫程式，它也正在重新定義專業開發者的工作方式——而嚴謹的自動化工作流才是兩者之間真正的分水嶺。"
 ---
 

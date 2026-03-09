@@ -2,7 +2,7 @@
 title: "Multi-Agent AI Framework 比較：CrewAI、LangGraph、AutoGen、Swarm (2026 Q1)"
 date: 2026-02-27
 draft: false
-tags: ["AI", "Agent", "Multi-Agent", "Framework"]
+tags: ["AI Agent", "Multi-Agent", "Framework"]
 summary: "CDP 多代理人編排架構選型參考，比較 CrewAI、LangGraph、AutoGen、OpenAI Swarm 等主流框架。"
 ---
 

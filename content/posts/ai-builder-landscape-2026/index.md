@@ -2,7 +2,7 @@
 title: "AI Builder 三種面貌：企業自動化、Vibe Coding 與 Agent 框架"
 date: 2026-03-08
 draft: false
-tags: ["AI Builder", "Vibe Coding", "LangChain", "Agent", "Low-Code"]
+tags: ["AI Builder", "Vibe Coding", "LangChain", "AI Agent", "Low-Code"]
 summary: "2026 年「AI Builder」同時指向三種工具：Microsoft Power Platform 的業務自動化模組、自然語言生成完整應用的 vibe coding 工具、以及供工程師串接 LLM 的 agent 框架。三者目標用戶和技術深度幾乎沒有交集。"
 ---
 

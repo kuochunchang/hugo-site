@@ -2,7 +2,7 @@
 title: "Harness Engineering 五大核心原則：AI 時代工程師的全新工作方式"
 date: 2026-03-02
 draft: false
-tags: ["Harness Engineering", "AI Agent", "軟體架構", "OpenAI", "DevOps"]
+tags: ["Harness Engineering", "AI Agent", "Software Architecture", "OpenAI", "DevOps"]
 summary: "OpenAI 提出的 Harness Engineering 五大核心原則：設計環境、機械式架構強制、對抗熵增，搭配具體實踐方法與案例。"
 ---
 

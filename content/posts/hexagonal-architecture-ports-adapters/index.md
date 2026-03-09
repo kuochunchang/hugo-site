@@ -2,7 +2,7 @@
 title: "六邊形架構：Ports & Adapters 的設計哲學與實踐"
 date: 2026-03-07
 draft: false
-tags: ["架構設計", "軟體工程", "DDD", "測試", "微服務"]
+tags: ["Software Architecture", "Software Engineering", "DDD", "Testing", "Microservices"]
 summary: "Alistair Cockburn 的 Ports & Adapters 模式如何用 Port 和 Adapter 的命名，把業務邏輯和技術細節的邊界概念化，並讓測試與基礎設施替換變得可行。"
 ---
 

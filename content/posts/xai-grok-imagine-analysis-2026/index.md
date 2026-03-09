@@ -2,7 +2,7 @@
 title: "xAI Grok Imagine：從圖像到影片的生成架構"
 date: 2026-03-03
 draft: false
-tags: ["xAI", "Grok", "圖像生成", "影片生成", "Aurora"]
+tags: ["xAI", "Grok", "Image Generation", "Video Generation", "Aurora"]
 summary: "xAI 的 Grok Imagine 以自研 Aurora 自迴歸模型取代 FLUX，整合圖像與影片生成，本文分析其架構演進、技術規格與市場定位。"
 ---
 

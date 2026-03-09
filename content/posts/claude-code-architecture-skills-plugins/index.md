@@ -2,7 +2,7 @@
 title: "Claude Code 的架構設計 Skills 與 Plugins：機制、生態與實踐建議"
 date: 2026-03-07
 draft: false
-tags: ["Claude Code", "架構設計", "Skills", "Plugins", "ADR"]
+tags: ["Claude Code", "Software Architecture", "Skills", "Plugins", "ADR"]
 summary: "梳理 Claude Code Skills 系統在架構設計領域的技術機制、代表性工具與採用現況，並提供實踐建議。"
 ---
 

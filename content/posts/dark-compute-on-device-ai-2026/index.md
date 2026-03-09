@@ -2,7 +2,7 @@
 title: "黑暗運算：當 AI 推論從雲端消失到設備端"
 date: 2026-03-05
 draft: false
-tags: ["Edge AI", "On-Device AI", "AI 治理", "Qwen", "隱私運算"]
+tags: ["Edge AI", "AI Governance", "Qwen", "Privacy Computing"]
 summary: "隨著 Qwen 3.5 等模型在消費設備上離線運行，AI 推論正在逃離雲端監控的視野，形成一個監管框架幾乎無法觸及的「黑暗運算」時代。"
 ---
 
