@@ -1,0 +1,118 @@
+---
+title: "沒有人有五年的 AI 開發經驗"
+date: 2026-03-10
+draft: false
+tags: [AI Engineering, Career Development, LLM, Developer Skills, Job Market]
+summary: "ChatGPT 上線至今三年多，全球沒有任何人有超過三年的 LLM 應用開發第一線經驗，這個事實對每個開發者意味著什麼。"
+---
+
+<audio controls preload="none" style="width:100%; margin: 1rem 0;">
+  <source src="audio.mp3" type="audio/mpeg">
+  你的瀏覽器不支援音頻播放。
+</audio>
+
+2022 年 11 月 ChatGPT 公開上線，這是一條清晰的分界線。在那之前，大型語言模型是 Google 和 OpenAI 研究室的內部工具，LLM 應用開發不存在作為獨立職業類別。在那之後，任何人都可以透過一個 API 調用構建 GPT-4 應用。從這個起點算起，到 2026 年初，資歷最深的 LLM 應用工程師也只有大約三年的相關工作經驗。如果把範圍縮小到 AI Agents、RAG 系統、MCP 這些更新的子領域，「資深」的定義甚至更短。
+
+在軟體工程的其他領域，資深工程師可能有十年以上的 Kubernetes 運維、二十年的資料庫調優，或者跨越多個技術週期的系統架構決策積累。但在 LLM 應用開發、AI agent 系統、RAG pipeline 的生產化部署上，全球沒有任何人有超過三年的第一線經驗。
+
+這個現象在技術史上不罕見。1995 年沒有人有五年的網站開發經驗，2008 年沒有人有五年的 iPhone 應用開發經驗，2015 年沒有人有五年的 Kubernetes 生產運維經驗。每次這樣的轉折點，都會打開一段獨特的窗口期。問題是，這次的窗口形狀是什麼。
+
+## 數字如何說明這件事
+
+Amplify Partners 的 2025 AI Engineering Report 調查了大量 AI 工程師，揭露了一個令人意外的分佈：在軟體開發資歷超過十年的從業者中，有 45% 的人 AI 開發經驗只有三年以下，10% 的人不到一年。這不是技術淘汰的故事，而是每個人都剛入行的故事。
+
+同一份報告顯示，AI 工程師每月更新模型的比例超過 50%，每月更新 prompt 的比例達到 70%。這個節奏說明的是：沒有人在這個領域建立了可以「吃老本」的知識庫。去年有效的技術決策，今年可能需要重寫。
+
+LangChain 的 State of Agent Engineering 報告顯示，目前有 57.3% 的受訪者已將 AI agent 部署到生產環境，另有 30.4% 正在積極開發準備上線。但「能部署」和「懂得維運」是兩件事。生產環境的 agent 品質問題（準確性、一致性）仍是最大瓶頸，32% 受訪者提及，其次是延遲。這些問題沒有教科書解，每個人都在從實戰中摸索。
+
+## 什麼被重置了，什麼沒有
+
+當一個新技術範式出現，它不會平等地清除所有人的既有優勢。在 LLM 應用開發領域，重置最徹底的是工具鏈和框架知識。LangChain 在 2023 年幾乎是構建 LLM 應用的標準答案，到 2024 年已經被很多人批評為過度設計，LangGraph、LlamaIndex 以及各種更輕量的封裝相繼出現。Swyx（Shawn Wang）在 2023 年寫的「The Rise of the AI Engineer」一文中提到，在 2013 年需要五年和一個研究團隊才能完成的任務，在 2023 年只需要一個下午和 API 文件。框架和工具的更替速度讓「我用 LangChain 做了兩年」這樣的表述，在三年後可能幾乎沒有市場價值。技能的半衰期從十年壓縮到了兩年左右，在 AI 開發的核心工具鏈上可能更短。
+
+但有些東西沒有過期。
+
+**系統設計直覺**。生產環境中的 RAG 系統在本質上仍然是分散式系統，面對的問題是延遲、可靠性、資料一致性。有十年後端經驗的工程師在設計 AI 系統的容錯機制時，比一個剛學完 LangChain 教程的人具有更清晰的思路。
+
+**除錯能力**。LLM 輸出的不確定性讓除錯比傳統軟體更困難，而不是更容易。能系統性地縮小問題範圍、設計可觀測性方案的人，比熟悉特定框架的人更稀缺。
+
+**業務問題理解**。AI 不會自動定義需要解決什麼問題。在金融、醫療、法律等領域積累的業務知識，在設計 AI 應用時是直接的競爭優勢。
+
+## 誰在這個局面中得益最多
+
+Andrew Ng 在分析 AI 工程師市場時，提出了一個四層人才架構。最有生產力的是那些有 10 到 20 年軟體開發資歷、並且早期採用 AI 工具的工程師。他的原話是：「這些人現在的移動速度，比一兩年前任何人見過的都要快。」他們用 AI 工具放大的是幾十年累積的系統判斷力：知道什麼時候架構有問題、API 設計有潛在危機、AI 生成的代碼引入了安全漏洞。
+
+第二層是有 AI 技能的應屆畢業生。Ng 說：「我們找不到足夠的這類人，很多公司都想招這些剛畢業的大學生。」第三層是沒有跟上 AI 工具的資深工程師。Ng 的態度很直接：「我就不雇用這類人了。」第四層是沒有 AI 技能的應屆畢業生。
+
+這個架構的核心是：AI 工具是一個乘數，放大的是底層能力。但這也說明，底數有其意義，不是所有人的起點都一樣。真正的機會在於，一個有強烈學習驅動力、能快速實戰的新人，可以超越那些習慣了舒適區、不願調整工作方式的老兵。
+
+## 一個反直覺的研究數據
+
+在「AI 讓開發者更高效」的敘事中，有一個重要的例外。2025 年 7 月，METR（Model Evaluation & Threat Research）發布了一項針對資深開源開發者的隨機對照實驗。被測試的開發者來自超過 22,000 顆 Star 的開源項目，是真正有實力的工程師。結果是：使用 AI 工具的開發者完成任務的速度比不使用的人慢了 19%。
+
+更有趣的是感知與現實的落差：這些開發者在實驗前預期 AI 會讓他們快 24%，實驗後仍然認為 AI 讓他們快了 20%，但客觀測量結果是他們慢了 19%。
+
+研究者的解釋是：在高標準代碼庫中，AI 工具產出的代碼質量不符合隱性要求（文件、測試、格式規範），工程師花了大量時間在 AI 輸出上做修改，反而比自己寫更慢。這個效果在對代碼質量要求更低的場景下很可能不成立。
+
+這個數據說明的是：AI 工具的效益強烈依賴於使用場景和工程師的工作方式。最佳實踐還沒有形成共識，業界仍在摸索什麼情況下用 AI 工具有效、什麼情況下是反效果的。這個摸索本身，就是機會所在。
+
+## 供需的結構性錯位
+
+市場上有兩種看似矛盾的現象同時存在：大量初級開發者找不到工作，而企業同時找不到足夠的 AI 工程師。這個矛盾反映的是結構性錯位，不是真正的矛盾。
+
+Stack Overflow 的開發者調查記錄了 2024 年一個尖銳的現象：入門級技術職缺較前一年下降了 25%。Stanford 的研究顯示，22 至 25 歲的軟體工程師就業率從 2022 年底到 2025 年中下降了接近 20%，同期 35 至 49 歲工程師的就業率上升了 9%。原因很直接：GitHub Copilot、Claude Code、Cursor 接管了傳統初級工程師處理的任務，寫基礎函數、構建簡單應用、文件整理。
+
+與此同時，ManpowerGroup 的 2026 年全球人才短缺調查顯示，AI 技能首次超越所有其他類別，成為雇主最難找到的技能，72% 的雇主報告招聘困難。根據 Full Scale 的估計，全球有 420 萬個 AI 相關職位空缺，但只有 32 萬名合格的工程師可以填補，企業因 AI 計劃延誤平均每年損失 280 萬美元。IT 主管中面臨 AI 人才短缺的比例，從 2023 年的 28% 在兩年內上升到超過 50%，這是相關調查 16 年歷史中最陡峭的兩年漲幅。
+
+AI 工程師的薪資在 2025 年平均達到 206,000 美元，比上一年跳升 50,000 美元。Intuition Labs 的數據顯示，儘管整體科技職位下降了 27%，AI 相關職位在三個月內增加了 16%，且 78% 的 IT 職位現在要求具備 AI 知識。
+
+被需要的人和可用的人不是同一群人。機會不是「去學 Python 就能找到好工作」，而是「能把 AI 系統部署到生產環境、讓它在生產環境中持續工作、能測量它的效果」這樣的能力組合。
+
+## 機會的具體位置
+
+**生產化落地的技術稀缺**。很多公司有 AI demo，很少公司能穩定上線到生產。問題不是模型能力，是 observability、評估框架、失效處理、成本控制。約 85% 的 AI 項目無法交付業務價值，而具備成熟 MLOps 實踐的組織，模型部署成功率約 90%，部署速度快 5 倍。ZenML 分析了 1,200 個生產部署案例，發現 62% 的生產團隊計劃在未來一年改善可觀測性。Amplify 報告另外顯示，31% 的 AI 工程師沒有任何結構化的 prompt 管理工具，連工具都沒有，更別說最佳實踐。這是一片尚待開墾的工程學科。
+
+**垂直領域的複合優勢**。Gloat 的資料顯示，75% 以上的 AI 職位廣告明確尋求具備深厚領域知識的候選人，相比純技術通才，這類候選人的薪資高出 30-50%。一個有醫療背景的工程師做醫療 AI 應用，和一個只懂 LLM API 的工程師相比，優勢是結構性的。AI 工具讓有領域知識的人能更快做出真正有效的東西，同時讓沒有領域知識的人能更快做出「看起來像樣」的東西。
+
+**評估與品質控制**。LLM 輸出的評估是一個尚未有成熟標準的領域。如何系統性地測試 AI 系統的邊界、如何建立自動化評估管線、如何在沒有真實標籤的情況下衡量輸出質量，這些問題沒有教科書答案。
+
+**框架不穩定帶來的入場優勢**。LangChain、LlamaIndex、AutoGen 在 2023 年到 2026 年之間的 API 設計改動之大，幾乎每個版本都需要重學。這對已建立的工程師是摩擦，對新進者是機會：沒有過時的肌肉記憶要克服，也沒有「以前我們這樣做」的慣性。
+
+**安全性和 Guardrails**。生產環境中的 AI 系統面臨提示注入、越獄、資料洩漏等問題。Cleanlab 的研究指出，業界已經認識到純依賴提示層面的護欄不夠可靠，「把安全邏輯從提示移進基礎設施」正在成為新的方向。這個子領域的最佳實踐還在形成中。
+
+## 一個尚未解決的結構性問題
+
+初級職缺的消失帶出一個問題：如果入門職缺消失了，誰來成為下一批資深工程師？
+
+舊世界的知識傳遞鏈是：初級工程師做 boilerplate，然後承接功能開發，然後設計架構，最後指導後輩。每一層的工作都在訓練下一層的判斷力。現在初級的工作被 AI 接走了。資深工程師效率大增，但傳承的路徑不見了。這個問題被描述為「缺少梯級的職業梯子」，產業在從 AI 生產力中獲益的同時，正在悄悄消耗它的技術儲備深度。
+
+PwC 的 2026 AI 商業預測描述了一個「沙漏型」的人才需求結構：對初級員工的需求集中在 AI 技術能力強的人，對資深員工的需求集中在策略判斷，中層的傳統技能型角色正在壓縮。這個結構意味著，那些能夠同時具備 AI 工具熟悉度和系統性技術判斷力的人，面對的是一個供給持續收縮的市場。
+
+## 窗口有多長
+
+這個窗口是有限的。人才管線正在形成：大量大學在 2024-2025 年增加了 AI 工程相關課程，Coursera、Udemy 上關於 LLM Engineering、Agentic AI 的課程銷量在兩年內翻了數倍。最低門檻也在上升，2023 年能構建一個可用的 RAG 系統就足以讓雇主印象深刻，到 2026 年，雇主預期候選人已經理解 RAG 的局限性，能設計更複雜的 Agentic 系統。Google、Microsoft、Amazon 都在大規模培訓內部員工的 AI 技能，企業自己解決人才問題的能力在提升。
+
+技術範式轉移創造的機會窗口，通常在五到七年內從開放逐漸收窄。LLM 應用開發的起點是 2022 年底，這意味著窗口可能在 2027-2029 年前後進入相對成熟期，早期遷移優勢開始消退。
+
+語言模型的能力進步速度，讓某些今天稀缺的技能明後年可能商品化。Amplify 報告顯示，70% 的 AI 工程師每月更新 prompt，50% 以上每月更換模型，在這個節奏下，任何具體技術的護城河都很淺。真正可以建立的護城河，是在高速變化的工具之上累積起來的生產化判斷力：知道什麼時候 RAG 不適合用向量搜尋、agent 在哪個邊界條件下會失控、評估框架如何設計才能捕捉真實問題而不只是測試集表現。這些判斷不依附於特定工具，遷移成本高。
+
+「沒有人有五年 AI 開發經驗」描述的是一個歷史上少有的起點重置時刻。它不意味著每個人都是平等的，系統設計、除錯能力、業務理解在 LLM 應用開發中仍然有明確的優勢；它也不意味著進入這個領域很容易，85% 的 AI 項目失敗說明的是工程嚴謹性的必要。它真正意味著的是：這個領域的知識邊界仍然是開放的，最佳實踐仍然在形成，沒有一個群體已經建立起讓外人無法追趕的資歷護城河。在這個特定的時間窗口，系統性地積累可在生產環境中驗證的經驗，比在任何成熟技術領域都具有更高的邊際回報。問題只剩下：誰在動手寫。
+
+## 參考資料
+
+- [The 2025 AI Engineering Report - Amplify Partners](https://www.amplifypartners.com/blog-posts/the-2025-ai-engineering-report)
+- [State of Agent Engineering - LangChain](https://www.langchain.com/state-of-agent-engineering)
+- [The Rise of the AI Engineer - Latent.Space](https://www.latent.space/p/ai-engineer)
+- [AI vs Gen Z: How AI has changed the career pathway for junior developers - Stack Overflow](https://stackoverflow.blog/2025/12/26/ai-vs-gen-z/)
+- [Andrew Ng's AI Engineering Talent Hierarchy - IndexBox](https://www.indexbox.io/blog/andrew-ng-reveals-ai-talent-hierarchy-experienced-engineers-on-top/)
+- [Andrew Ng's 2025 Year-End Summary](https://eu.36kr.com/en/p/3617702870516739)
+- [Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity - METR](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/)
+- [Global Talent Shortage Reaches Turning Point as AI Skills Claim Top Spot - ManpowerGroup](https://www.prnewswire.com/news-releases/global-talent-shortage-reaches-turning-point-as-ai-skills-claim-top-spot-302698509.html)
+- [2026 Is the Year of Agentic Engineering - Medium](https://medium.com/generative-ai-revolution-ai-native-transformation/2026-is-the-year-of-agentic-engineering-the-ai-skills-gap-enterprises-cant-ignore-346e07a7a50d)
+- [AI Commoditizes Entry-Level Work While Amplifying Senior Value](https://blog.suryas.org/p/ai-commoditizes-entry-level-amplifies-senior)
+- [2026 AI Business Predictions - PwC](https://www.pwc.com/us/en/tech-effect/ai-analytics/ai-predictions.html)
+- [What 1,200 Production Deployments Reveal About LLMOps in 2025 - ZenML](https://www.zenml.io/blog/what-1200-production-deployments-reveal-about-llmops-in-2025)
+- [AI Engineer Job Market 2025 - Intuition Labs](https://intuitionlabs.ai/articles/ai-engineer-job-market-2025)
+- [AI Skills Demand in the U.S. Job Market 2026 - Gloat](https://gloat.com/blog/ai-skills-demand/)
+- [AI Agents in Production 2025 - Cleanlab](https://cleanlab.ai/ai-agents-in-production-2025/)
+- [The Crisis of Entry-Level Labor in the Age of AI - Rezi](https://www.rezi.ai/posts/entry-level-jobs-and-ai-2026-report)
+- [Why AI Engineer Is the Most In-Demand Career in 2026 - BigBlue Academy](https://bigblue.academy/en/why-ai-engineer-is-the-most-in-demand-tech-career-in-2025-2026-beyond-and-how-to-break-in)
