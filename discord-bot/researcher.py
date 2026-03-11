@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Callable, Coroutine
 
 import config
-from prompt import build_draft_prompt, build_final_prompt, build_research_prompt
+from prompt import build_draft_prompt, build_final_prompt, build_research_prompt, build_review_prompt
 
 log = logging.getLogger(__name__)
 
@@ -663,7 +663,7 @@ async def run_dual_research(
             )
         )
 
-    merge_prompt = build_final_prompt(topic, draft_paths, config.TTS_VOICE)
+    merge_prompt = build_final_prompt(topic, draft_paths)
 
     try:
         merge_result = await _run_claude_process(
@@ -680,35 +680,110 @@ async def run_dual_research(
             except asyncio.CancelledError:
                 pass
 
-    # 清理暫存檔
-    _cleanup_temp_files(draft_a, draft_b)
-
-    total_elapsed = time.monotonic() - total_start
+    # ── 解析合併結果（需要 slug 進入查核階段）──
 
     if not merge_result.success:
+        _cleanup_temp_files(draft_a, draft_b)
         return ResearchResult(
             success=False,
             reason=f"合併發布失敗：{merge_result.reason}",
-            duration_seconds=total_elapsed,
+            duration_seconds=time.monotonic() - total_start,
         )
 
     success, title, slug, reason = _parse_result(merge_result.output)
 
-    total_tools = result_a.tool_count + result_b.tool_count + merge_result.tool_count
-    if success:
+    if not success:
+        _cleanup_temp_files(draft_a, draft_b)
+        tail = merge_result.output.strip()[-500:] or "(空輸出)"
+        log.warning("合併結果解析失敗（耗時 %.0f 秒）：%s", time.monotonic() - total_start, reason)
+        log.warning("Claude 輸出尾部：%s", tail)
+        return ResearchResult(
+            success=False,
+            title=title,
+            slug=slug,
+            reason=reason,
+            duration_seconds=time.monotonic() - total_start,
+        )
+
+    log.info("合併完成：%s (slug: %s)，進入事實查核階段", title, slug)
+
+    # ── 階段三：事實查核 ──
+
+    if progress_callback:
+        try:
+            elapsed = time.monotonic() - total_start
+            await progress_callback(
+                "🔎 事實查核中...",
+                elapsed,
+                slug,
+            )
+        except Exception:
+            pass
+
+    review_tracker = ActivityTracker()
+    review_monitor: asyncio.Task | None = None
+
+    if progress_callback:
+        review_monitor = asyncio.create_task(
+            _progress_monitor(
+                posts_dir, known_slugs, total_start, progress_callback, review_tracker,
+            )
+        )
+
+    review_prompt = build_review_prompt(topic, slug, draft_paths, config.TTS_VOICE)
+
+    try:
+        review_result = await _run_claude_process(
+            review_prompt,
+            label=f"review_{topic[:30]}",
+            tracker=review_tracker,
+            max_turns=config.CLAUDE_REVIEW_MAX_TURNS,
+            timeout=config.CLAUDE_REVIEW_TIMEOUT,
+        )
+    finally:
+        if review_monitor:
+            review_monitor.cancel()
+            try:
+                await review_monitor
+            except asyncio.CancelledError:
+                pass
+
+    # 清理暫存檔（查核完成後才清理，因為查核需要讀取草稿）
+    _cleanup_temp_files(draft_a, draft_b)
+
+    total_elapsed = time.monotonic() - total_start
+
+    if not review_result.success:
+        return ResearchResult(
+            success=False,
+            reason=f"事實查核失敗：{review_result.reason}",
+            duration_seconds=total_elapsed,
+        )
+
+    # 重新解析查核結果（查核步驟可能修正了標題）
+    r_success, r_title, r_slug, r_reason = _parse_result(review_result.output)
+    final_title = r_title or title
+    final_slug = r_slug or slug
+
+    total_tools = (
+        result_a.tool_count + result_b.tool_count
+        + merge_result.tool_count + review_result.tool_count
+    )
+
+    if r_success:
         log.info(
-            "雙路研究完成：%s (slug: %s，總耗時 %.0f 秒，共 %d 個工具)",
-            title, slug, total_elapsed, total_tools,
+            "雙路研究完成（含查核）：%s (slug: %s，總耗時 %.0f 秒，共 %d 個工具)",
+            final_title, final_slug, total_elapsed, total_tools,
         )
     else:
-        tail = merge_result.output.strip()[-500:] or "(空輸出)"
-        log.warning("合併結果解析失敗（耗時 %.0f 秒）：%s", total_elapsed, reason)
+        tail = review_result.output.strip()[-500:] or "(空輸出)"
+        log.warning("查核結果解析失敗（耗時 %.0f 秒）：%s", total_elapsed, r_reason)
         log.warning("Claude 輸出尾部：%s", tail)
 
     return ResearchResult(
-        success=success,
-        title=title,
-        slug=slug,
-        reason=reason,
+        success=r_success,
+        title=final_title,
+        slug=final_slug,
+        reason=r_reason,
         duration_seconds=total_elapsed,
     )
