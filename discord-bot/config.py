@@ -23,6 +23,10 @@ CLAUDE_DRAFT_TIMEOUT = int(os.environ.get("CLAUDE_DRAFT_TIMEOUT", "900"))  # 15 
 # 合併發布階段
 CLAUDE_MERGE_TIMEOUT = int(os.environ.get("CLAUDE_MERGE_TIMEOUT", "900"))  # 15 分鐘
 
+# 事實查核階段
+CLAUDE_REVIEW_MAX_TURNS = int(os.environ.get("CLAUDE_REVIEW_MAX_TURNS", "20"))
+CLAUDE_REVIEW_TIMEOUT = int(os.environ.get("CLAUDE_REVIEW_TIMEOUT", "600"))  # 10 分鐘
+
 # 停滯偵測（tool_count 無變化超過此秒數則判定停滯）
 CLAUDE_STALL_TIMEOUT = int(os.environ.get("CLAUDE_STALL_TIMEOUT", "300"))  # 5 分鐘
 
