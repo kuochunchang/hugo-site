@@ -259,3 +259,73 @@ def build_final_prompt(topic: str, draft_paths: list[str]) -> str:
 
 ### 第二步：{_RESULT_OUTPUT_STEPS.removeprefix("### ")}
 """
+
+
+def build_review_prompt(
+    topic: str, slug: str, draft_paths: list[str], voice: str,
+) -> str:
+    """事實查核 prompt：比對草稿 + 上網驗證 → 修正 → 語音 → git push。"""
+    today = date.today().isoformat()
+
+    draft_list = "\n".join(f"- `{p}`" for p in draft_paths)
+
+    return f"""你是一位嚴謹的事實查核編輯。
+
+## 任務
+
+審查以下已合併的技術文章，確保所有事實陳述與來源資料一致，消除任何可能的幻覺或不準確內容。
+
+### 研究主題
+{topic}
+
+### 文章路徑
+`content/posts/{slug}/index.md`
+
+### 原始研究草稿
+{draft_list}
+
+## 查核步驟
+
+### 第一步：閱讀所有資料
+
+1. 閱讀合併後的文章全文
+2. 閱讀所有原始研究草稿
+
+### 第二步：比對草稿來源
+
+1. 逐段檢查文章中的事實陳述，確認每個聲明都能在草稿的研究資料中找到依據
+2. 標記任何在合併過程中可能被扭曲、誇大或無中生有的內容
+3. 特別注意：
+   - 數字、日期、版本號是否正確
+   - 引用的公司、人物、專案名稱是否準確
+   - 技術細節（API、架構、功能）是否與來源一致
+   - 比較性陳述（「最快」「首次」「唯一」）是否有來源支持
+
+### 第三步：上網交叉驗證
+
+1. 針對文章中的關鍵事實聲明，使用 WebSearch 和 WebFetch 進行驗證
+2. 重點驗證：
+   - 產品發布日期和版本資訊
+   - 效能數據和基準測試結果
+   - 公司和專案的最新狀態
+   - 技術規格和限制
+3. 如果網路資料與文章內容矛盾，以可靠來源為準
+
+### 第四步：修正文章
+
+如果發現任何問題：
+1. 直接修改 `content/posts/{slug}/index.md`
+2. 修正不準確的事實陳述
+3. 移除無法驗證的聲明，或改為更謹慎的措辭
+4. 確保修正後文章仍然流暢自然
+
+如果沒有發現問題，不需要修改。
+
+{_WRITING_STYLE_RULES}
+
+### 第五步：{_AUDIO_STEPS.format(voice=voice).removeprefix("### ")}
+
+### 第六步：{_GIT_PUSH_STEPS.removeprefix("### ")}
+
+### 第七步：{_RESULT_OUTPUT_STEPS.removeprefix("### ")}
+"""
