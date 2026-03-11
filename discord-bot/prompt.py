@@ -1,5 +1,7 @@
 from datetime import date
 
+from tags import get_existing_tags
+
 
 # ── 共用片段 ──────────────────────────────────────────────
 
@@ -23,8 +25,12 @@ _ARTICLE_STRUCTURE = """\
    - 比較分析（如適用）
    - 實際應用場景
    - 結論與展望
-4. 引用參考來源（附上連結）
-5. 技術名詞保留英文原文"""
+4. 深度要求：
+   - 不要只是重述來源資料的內容，要加入基於來源事實的分析
+   - 指出不同來源之間的矛盾或爭議
+   - 用自己的框架重新組織資訊，不要沿用原始來源的章節順序和敘事結構
+5. 引用參考來源（附上連結）
+6. 技術名詞保留英文原文"""
 
 _WRITING_STYLE_RULES = """\
 **寫作風格要求（嚴格遵守）：**
@@ -37,7 +43,10 @@ _WRITING_STYLE_RULES = """\
 - 用具體的技術細節和例子說明觀點，避免空泛的形容詞堆砌
 - 段落之間自然銜接，不需要每段都有「總結性」開頭或結尾"""
 
-_HUGO_PUBLISH_STEPS = """\
+def _hugo_publish_steps(today: str) -> str:
+    tags = get_existing_tags()
+    tag_list = ", ".join(tags)
+    return f"""\
 ### 發布到 Hugo
 
 1. 從標題產生一個英文 slug（用小寫和連字號，例如 `mcp-protocol-analysis-2026`）
@@ -49,10 +58,17 @@ _HUGO_PUBLISH_STEPS = """\
 title: "<標題>"
 date: {today}
 draft: false
-tags: [<從內容自動判斷 3-5 個標籤>]
+tags: [<選擇 3-5 個標籤>]
 summary: "<一句話摘要>"
 ---
 ```
+
+**標籤規範：**
+- 統一使用英文
+- 優先從以下已有標籤中選擇：{tag_list}
+- 只在已有標籤都無法描述文章內容時才新增標籤
+- 新增標籤時，專有名詞保持原始大小寫（如 Claude Code），通用詞用 Title Case（如 Software Engineering）
+- 不要使用過於籠統的標籤（如單獨用 "AI"）
 
 注意：front matter 中不要包含原始的 `# 標題` 行和 `> 研究日期` 行。"""
 
@@ -139,7 +155,7 @@ def build_research_prompt(topic: str, voice: str) -> str:
 
 {_WRITING_STYLE_RULES}
 
-### 第三步：{_HUGO_PUBLISH_STEPS.format(today=today).removeprefix("### ")}
+### 第三步：{_hugo_publish_steps(today).removeprefix("### ")}
 
 ### 第四步：{_AUDIO_STEPS.format(voice=voice).removeprefix("### ")}
 
@@ -193,8 +209,8 @@ RESULT::STATUS=FAILED::REASON=<失敗原因>
 """
 
 
-def build_final_prompt(topic: str, draft_paths: list[str], voice: str) -> str:
-    """合併發布 prompt：合併/潤飾草稿 → Hugo 發布 → 語音 → git push。"""
+def build_final_prompt(topic: str, draft_paths: list[str]) -> str:
+    """合併發布 prompt：合併/潤飾草稿 → Hugo 發布（不含語音和 git push）。"""
     today = date.today().isoformat()
 
     if len(draft_paths) == 2:
@@ -239,11 +255,7 @@ def build_final_prompt(topic: str, draft_paths: list[str], voice: str) -> str:
 
 ## 發布步驟
 
-### 第一步：{_HUGO_PUBLISH_STEPS.format(today=today).removeprefix("### ")}
+### 第一步：{_hugo_publish_steps(today).removeprefix("### ")}
 
-### 第二步：{_AUDIO_STEPS.format(voice=voice).removeprefix("### ")}
-
-### 第三步：{_GIT_PUSH_STEPS.removeprefix("### ")}
-
-### 第四步：{_RESULT_OUTPUT_STEPS.removeprefix("### ")}
+### 第二步：{_RESULT_OUTPUT_STEPS.removeprefix("### ")}
 """
