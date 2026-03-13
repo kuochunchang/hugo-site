@@ -1,0 +1,115 @@
+Wix 目前承載全球約百分之四的網站，是市佔率前幾名的雲端建站平台。從早期拖放即建站的定位，它逐步演化成涵蓋 AI 助理、設計工具、業務解決方案和開發者 API 的多層次平台。理解 Wix 能做什麼，前提是先弄清楚它提供了幾條不同的路徑——不同背景的使用者進入同一個平台，實際上使用的是差異相當大的工具集。
+
+五條入口
+
+Wix 不是單一產品，而是幾種工具模式的集合。
+
+Wix ADI，也就是 Artificial Design Intelligence，是最快的入口。使用者回答幾個問題，AI 自動生成可用的網站，包括版型、色系、文字內容。適合快速驗證概念，但後續若要深度客製仍需切換到 Wix Editor。
+
+Wix Classic Editor 是傳統的拖放編輯器，有兩千多個模板，元素可以自由定位在頁面任意位置，不像 Squarespace 那樣受限於 section 結構。代價是模板一旦選定就無法更換，這個設計讓初期的模板選擇相對關鍵，後期想換風格只能從頭建。行動版和桌面版的布局是分開設定的，不是自動縮放。
+
+Wix Studio 是 2023 年推出的專業工具，2025 年 1 月完全取代了 Editor X，定位明確針對設計師和代理商。提供 CSS Grid 和 Flexbox 布局控制、斷點級別的響應式調整、多人即時協作，以及 Lottie、Spline、Rive 動畫整合。Editor X 的所有網站已自動遷移過來，無停機時間。
+
+Velo by Wix 是開發者工具，在 Wix 編輯器環境內寫 JavaScript，包含伺服器端的程式碼，可以存取 Wix 的資料 API、呼叫第三方服務、建立自訂後端邏輯。這一層讓 Wix 超出了模板建站工具的範疇。
+
+Wix Headless 是完全解耦的 API 優先模式。開發者用 Wix 後台管理業務資料，包括電商、預約、活動、CMS，前端用任何框架，比如 Next.js、React、Vue、Svelte 自行建構，通過 REST 或 GraphQL API 串接。
+
+這五條路徑的存在，意味著「Wix 能做什麼」的答案取決於使用者選擇哪條路進去。底層三條主線共用同一套叫做 Thunderbolt 的渲染引擎，這是 Wix 自行開發的 SSR 框架，負責頁面載入優化、資源快取和預載。
+
+設計與前端能力
+
+Wix Studio 提供的設計控制已接近傳統前端開發。
+
+響應式布局支援斷點級別的控制，可以針對手機、平板、桌機分別調整元素位置和大小，而不是簡單縮放桌機版。CSS Grid 和 Flexbox 在 Studio 中可以直接使用，對習慣前端開發思維的設計師更直觀。
+
+設計 Token 系統，也就是 Global Design Tokens，可以統一管理全站的顏色、字型、間距變數，改一個 token 就自動同步到所有頁面。進階元件庫 Advanced Section Library 可以跨網站共用元件。
+
+動畫系統內建頁面切換動畫、Scroll Trigger 效果，以及 Lottie、Spline、Rive 整合，讓設計師可以把互動動畫嵌入頁面而不需要手寫 JavaScript。Studio 和 Velo 環境中也可以注入自訂 CSS。
+
+AI 功能
+
+2026 年 1 月，Wix 推出 Wix Harmony，將既有 AI 工具整合到統一介面，核心是一個叫做 Aria 的 AI agent。用自然語言對 Aria 下指令，它可以在編輯器內直接執行任務：生成頁面版型、調整文字內容、跨頁面批次修改，例如把整個網站的主色改成深藍。執行完後，用戶仍可用視覺介面做細部調整，不需要重新生成整個頁面。
+
+目前官方列出的 AI 功能超過二十項。建站方面有 AI Website Builder，透過對話問卷，五到十五分鐘內生成完整網站的頁面結構、文字和配色；AI Design Assistant 根據品牌風格自動建議配色、字型和版型；Responsive AI 自動調整布局讓頁面在不同螢幕尺寸正常呈現；AI Image Creator 根據描述生成圖片，整合在媒體管理介面中。
+
+內容與電商方面，AI Text Creator 可以在編輯器內生成部落格文章和產品描述；商品描述生成工具輸入商品名稱就能自動產出 SEO 優化的描述；Product Recommender 根據瀏覽行為向客戶推薦商品；AI 聊天客服可以回答常見問題並引導結帳流程。
+
+行銷與分析方面有自動化 email 行銷、AI 分析報告、個人化推薦引擎，以及多語言 AI 翻譯，翻譯後為每個語言版本生成獨立 URL，對 SEO 比單純用 JavaScript 切換語言更友好。
+
+超過百分之五十的新用戶在建站時使用 AI 工具，主要用在版型生成和內容初稿。這些 AI 功能的定位主要是輔助加速，而非替代設計決策，生成出來的內容通常需要人工審核調整。
+
+業務解決方案
+
+Wix 的業務功能是其平台黏性的主要來源，以 Wix Business Solutions 的形式內建或透過 App Market 提供。
+
+電子商務功能從 Core 方案，也就是每月二十九美元起啟用。商品目錄最多五萬個商品，支援實體、數位、訂閱制和服務類商品。商品規格選項支援六個類型、最多一千個組合，相比之下 Shopify 支援兩千零四十八個組合。Wix Payments 是自有支付閘道，接受信用卡、Apple Pay、訂閱制付款，內建詐欺偵測和退款處理。另外還支援八十多個全球支付提供商，含 Stripe 和 PayPal；多渠道銷售整合 eBay、Amazon、TikTok Shop；物流方面整合 USPS、Shippo 取得折扣運費，以及 Modalyst dropshipping 整合。儲存空間是個明顯限制，Wix 的方案有儲存上限，而 Shopify 和部分 Squarespace 高階方案提供無限儲存。
+
+Wix Bookings 預約管理支援三種服務類型：一對一預約、課程（固定時間多人）、課程包（連續多堂）。可設定多個服務人員的日曆可用時段、多個地點、複雜的定價結構。整合 Zoom 和 Google Meet，線上課程自動發送會議連結。
+
+Wix Events 活動票務管理支援免費活動和付費票務，可以設定多種票種，如早鳥票、VIP 票。Zoom 整合讓線上研討會的購票和連結發送一體化。
+
+Wix Automations 是觸發式工作流系統，觸發條件包括新訂單、廢棄購物車、訂閱者加入、表單提交等。動作端可連接 Mailchimp、HubSpot、Zapier，以及 Wix 自有的 Email Marketing 工具。這讓 Wix 不只是建站工具，也覆蓋了部分行銷自動化場景。
+
+開發者平台
+
+Velo by Wix 是 Wix 的開發者平台，允許在 Wix 網站上寫前端和後端 JavaScript。它不是讓你在 Wix 上執行任意 Node.js，而是在 Wix 管理的沙盒環境內寫程式。
+
+前端開發方面，可以在 Wix Editor 內建的 IDE 直接操作 DOM 元素，支援 ES2020 語法，包含 async/await 和 Promise，可以綁定 UI 元件的事件處理和動態渲染資料。
+
+後端是 Serverless 架構，提供自動擴展的 serverless Node.js 環境，無需設定伺服器。資料庫預設為 MongoDB，透過 Wix CMS 抽象化。支援自訂 HTTP function，可作為 webhook 端點；Web modules 讓後端函式可以直接從前端呼叫，Wix 處理安全傳輸。
+
+整合能力方面，Velo Fetch API 可以呼叫外部服務，比如 Stripe、SendGrid、Twilio。npm 套件可以安裝，但有白名單限制，不是所有套件都支援。支援自訂 router 動態生成頁面 URL 結構，以及連接 MySQL、Google Cloud、AWS 等外部資料庫。
+
+Velo 的主要限制：npm 套件不是完全開放，底層 Node.js 模組比如 fs 無法使用，後端執行時間也有上限。複雜的自訂後端邏輯在這個沙盒內會遇到邊界，與 Vercel 或 Netlify Functions 的彈性相比有明顯差距。
+
+Wix Headless 是完全解耦的架構，Wix 後台作為業務邏輯加 CMS 層，前端由開發者自己建構。提供 REST API 涵蓋電商、預約、活動、CMS、訂閱方案等所有業務模組；GraphQL API 提供更靈活的資料查詢；JavaScript SDK 封裝 API 呼叫；官方提供多個 Next.js starter 模板；還有 React Native 支援，可以把 Wix 的業務邏輯帶到行動 App。認證方面提供三種方式：Wix 托管的登入頁面、帶 reCAPTCHA 的自訂登入頁、以及完全外部管理的 OAuth 認證流。
+
+SEO 與分析
+
+Wix 早期因為 JavaScript 渲染被 SEO 社群批評，隨著 Thunderbolt 引擎和 SSR 的導入有顯著改善。目前支援符合 Google Core Web Vitals 要求、自訂 meta title 和 description、結構化資料編輯、Canonical URL 管理、301 重新導向設定、XML Sitemap 自動生成，以及多語言站點的 hreflang 標籤。2026 年新增 GEO 工具，也就是 Generative Engine Optimization，針對 AI 搜尋引擎的內容結構優化。
+
+仍有幾個技術限制：URL 結構自訂彈性不如 WordPress，頁面載入速度在複雜版型下表現不穩定，動態內容的 SEO 效果在某些複雜場景下仍不如靜態網站生成器。
+
+Wix Analytics 提供訪客行為儀表板，整合 Google Analytics 4，電商店主可追蹤轉換漏斗。AI 分析報告功能可以將原始數據轉化為可操作的建議。
+
+Wix Studio：代理商工作流
+
+Wix Studio 針對代理商和工作室的協作場景做了特定設計。Real-time 協作讓設計師和開發者可以同時在同一個畫布工作，類似 Figma 的多游標體驗。角色權限可以給客戶分配「Content Mode」，讓客戶只能編輯文字和圖片，無法誤觸版型；客戶審核模式讓客戶在隔離環境預覽變更，不影響正式站。Client Kit 是品牌指南、聯絡資訊、CMS 說明的打包工具。計費轉移讓代理商完成網站後，可以將帳單擁有權轉給客戶，同時保留設計存取。自動化報告會定期向客戶發送網站流量和業務數據摘要。
+
+企業方案起價約每月五百美元，提供專屬客戶經理和自訂編輯工具，適合需要統一管控品牌形象的大型企業。
+
+這套工作流讓 Wix Studio 在代理商市場形成差異化，主要競爭對手是 Webflow，設計能力更強但學習曲線更陡；以及 WordPress，更靈活但維護成本更高。
+
+基礎設施
+
+Wix 是全代管平台，聲稱支援每日數十億次訪問，SLA 可用性為 99.99%。所有方案包含免費自動更新的 SSL 憑證、DDoS 防護、符合 PCI DSS 的支付處理，以及 GDPR 合規工具，包括 Cookie 同意橫幅和資料匯出功能。
+
+用戶不需要處理伺服器配置、更新或備份，但也意味著無法控制底層基礎設施。
+
+競品對比
+
+從幾個維度比較主要競品。設計自由度方面，Wix 高，提供自由定位；Squarespace 中等，受 section 限制；Shopify 低，主題相對固定；WordPress 極高，幾乎沒有限制。
+
+電商深度方面，Wix 適合中小型；Squarespace 輕電商；Shopify 電商優先；WordPress 依外掛而定。開發者工具方面，Wix 有 Velo 加 Headless API；Squarespace 極少；Shopify 有 Liquid 模板語言加 App API；WordPress 有六萬多個外掛。
+
+商品上限方面，Wix 是五萬個；Squarespace 是一萬個；Shopify 和 WordPress 無限制。App 生態方面，Wix 有一千多個；Squarespace 約二十四個；Shopify 超過六千個；WordPress 超過六萬個。模板切換方面，Wix 不可換，其他三個都可以換。
+
+定價
+
+Wix 目前的定價分幾個方案，均為年繳月費。免費方案是 Wix 子域名加顯示廣告，無電商功能。Light 方案每月十七美元，自訂域名、兩 GB 儲存，無電商。Core 方案每月二十九美元，五十 GB 儲存，基本電商功能。Business 方案每月三十六美元，一百 GB 儲存，進階電商。Business Elite 方案每月一百五十九美元，無限儲存，完整功能集。Enterprise 方案從每月五百美元起，提供專屬客戶經理和自訂編輯工具。
+
+免費方案強制顯示 Wix 廣告且無法綁自訂域名，在專業用途上基本不可行。付費方案頻寬均為無上限。許多在 App Market 上的進階功能需要額外訂閱第三方 App，實際使用成本可能高於方案標價。
+
+適用邊界
+
+Wix 適合的情境：中小型企業官方網站、服務型商業，比如預約和報價；需要快速上線且不需要深度客製化的電商，商品規模在萬件以下；設計師或代理商管理多個客戶網站；需要 Wix 業務邏輯但想用自訂前端的開發者；以及同時需要內容網站和小型商店，不想跨兩個系統管理的情境。
+
+不適合的情境：需要精細 URL 結構控制或 SEO 密集型網站；複雜 B2B 電商、高商品數量、進階庫存預測和管理；需要完整 Node.js 環境或特定 npm 套件的後端邏輯；長期成本敏感或預期需要遷移的大型專案，因為 Wix 的資料遷出相對困難；以及對平台綁定高度敏感的技術團隊。
+
+小結
+
+Wix 是一個寬度大於深度的平台。它能覆蓋的使用場景相當廣：個人作品集、中小型電商、服務預約站點、活動票務、內容媒體站，這些在一個平台內都能處理，且不需要整合多個第三方服務。
+
+但它是一個封閉平台。你使用的所有工具都在 Wix 的邊界內，定價、功能開關、API 限制都由 Wix 說了算。選擇 Wix 本質上是在交換控制權和維護成本：放棄部分技術彈性，換取免管理基礎設施的開發速度。對於希望完整控制技術棧或預期需要複雜擴展的團隊，這個邊界最終會成為瓶頸。
+
+Headless 模式的成熟化是近兩年最值得關注的方向。它讓 Wix 的定位從建站工具轉向業務基礎設施，開發者可以把 Wix 當 Backend-as-a-Service 使用，前端保持完整的技術棧自由。這個轉型能否成功，取決於其 API 生態的完整度和開發者社群的接受程度。目前 Wix Headless 的部分業務模組 API 仍在 beta 狀態，對生產環境的採用需要評估目標 API 的成熟程度。
