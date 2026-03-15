@@ -1,0 +1,71 @@
+NVIDIA 最廣為人知的是 GPU 硬體，但硬體只是入場券。它同時是一家軟體公司，圍繞硬體建構了一整套從底層運算框架到企業 AI 平台、工業數位孿生、自駕車作業系統、機器人開發框架到 AI Agent 基礎設施的產品生態。理解這些軟體產品，能看清 NVIDIA 的競爭護城河從何而來，也能看出它在二零二五到二零二六年大量招募哪類型的工程師。
+
+CUDA，也就是 Compute Unified Device Architecture，從二零零六年發布至今，已是 NVIDIA 最重要的護城河，更接近 GPU 計算的作業系統，而不只是傳統軟體產品。
+
+CUDA 生態的核心是 CUDA-X，這是超過四百個加速計算函式庫的集合，分三大領域。CUDA-X AI 包含 cuDNN、TensorRT、NCCL、TensorRT-LLM，這些是 PyTorch、TensorFlow、JAX 等主流深度學習框架的底層依賴。CUDA-X HPC 涵蓋線性代數、快速傅立葉轉換、分子動力學模擬等科學計算函式庫。CUDA-X Data Processing 則包含 RAPIDS 資料科學工具集以及影像視訊處理庫。
+
+CUDA 的鎖定效應在於：訓練過的模型、最佳化過的 kernel、累積的工程師知識，都緊密依附 CUDA API。AMD 的 ROCm 和 Intel 的 oneAPI 在技術上都是可行替代，但生態系的慣性極大。NVIDIA 透過 NGC，也就是 NVIDIA GPU Cloud，將這些函式庫打包成容器，部署到 AWS、Azure、GCP，以及企業自己的資料中心，進一步深化這個鎖定。
+
+NVIDIA AI Enterprise 是 NVIDIA 明確瞄準企業訂閱收入的產品線，定位是企業生成式 AI 的作業系統。Jensen Huang 在多次法說會提及這個業務已達到多十億美元的年化收益率。授權方式包含按 GPU 訂閱或永久授權，也透過 Dell、Azure 等雲端市集銷售。
+
+NIM，也就是 NVIDIA Inference Microservices，是目前最積極推廣的部署工具。它把推論所需的一切——模型權重、TensorRT-LLM 最佳化引擎、Triton Inference Server、API 界面——封裝成標準化容器。企業可以在幾分鐘內部署一個大語言模型 API 端點，不需要自己處理模型量化、硬體相容性等問題。NIM 暴露的是 OpenAI 相容 API，可以直接替換現有 OpenAI API 應用，不需改寫業務邏輯。NIM 的覆蓋範圍也延伸至三維工具，包含生成 OpenUSD Python 程式碼、自然語言搜尋三維資產庫、以及驗證 USD 檔案相容性的微服務。
+
+NeMo 是 NVIDIA 的模型開發框架，從訓練、RLHF 微調、到 RAG 基礎建設都有涵蓋。NeMo Framework 是開源的研究工具，NeMo Microservices 定位在生產部署，需搭配 AI Enterprise 授權。兩者的分界讓部分使用者感到困惑：NeMo Framework 是工程師寫程式碼用的工具，NeMo Microservices 是運維人員部署和管理 AI 流程用的基礎設施。
+
+Triton Inference Server 是開源的 AI 推論伺服器，支援 PyTorch、TensorFlow、ONNX、TensorRT 等多框架，是企業生產環境部署模型的核心工具。
+
+NVIDIA Morpheus 是資安領域的 AI 框架，用於網路流量分析、異常偵測、釣魚攻擊識別，面向 SOC，也就是資安運營中心的 AI 化需求。
+
+Run:ai 是 NVIDIA 二零二四年以約七億美元收購的 GPU 工作負載排程平台，解決的問題是：企業採購了一批 GPU 但使用率低落，不同團隊的工作負載搶資源。Run:ai 透過資源池化和智慧排程，讓 GPU 使用率最大化。NVIDIA 後來在反壟斷壓力下宣布將 Run:ai 開源，但仍整合進 AI Enterprise 套件作為管理工具。
+
+DGX Cloud 是 NVIDIA 以軟硬體整合方式提供的雲端服務，與 AWS、Azure、GCP 合作，以 DGX 硬體為基礎，上層疊加 NVIDIA 自己的軟體堆疊，以 SaaS 形式對外提供。企業不需要自購 GPU 叢集，也能獲得 NVIDIA 完整最佳化的 AI 訓練環境。DGX Cloud 是 NVIDIA 從一次性硬體銷售轉向訂閱式軟體收入的重要載體之一。
+
+Omniverse 是 NVIDIA 針對物理 AI 建立的開發平台，核心是以 OpenUSD，這個由 Pixar 創立的工業標準三維場景描述格式，為資料互通基礎，上層整合光線追蹤渲染以及 GPU 加速物理模擬。
+
+AI 工廠數位孿生方面，NVIDIA 推出了 Omniverse DSX Blueprint，又稱 Omniverse Blueprint for AI Factory Digital Twins，讓 AI 資料中心的電力、散熱、網路可以在正式部署前先在虛擬環境裡測試。Schneider Electric、Siemens、Vertiv、Delta Electronics、Jacobs 等公司已整合進這個生態，讓整個 AI 工廠的機架佈置和散熱設計都能在部署前先模擬。工業自動化方面，Omniverse Cloud APIs 讓 Ansys、Dassault Systèmes、Hexagon、Siemens 等工業軟體直接調用 Omniverse 的即時渲染和物理模擬能力，NVIDIA 宣稱某些場景可達一千兩百倍的模擬加速。
+
+具體落地案例包含：BMW 使用 Omniverse 建立全球工廠的即時數位孿生，在虛擬環境中測試生產線重新配置再落地到實體廠房；Siemens Energy 建立發電廠數位孿生做預測性維護；Ericsson 用它模擬網路基礎設施。
+
+二零一九年 NVIDIA 以六十九億美元收購 Mellanox，取得高效能計算網路的核心技術。現在網路產品有兩條線。InfiniBand 是傳統超算和 AI 叢集的主流，延遲極低，但生態封閉。Spectrum-X 是 NVIDIA 二零二四年推出的 AI 專用以太網平台，核心主張是把 InfiniBand 的低延遲特性帶進以太網生態，宣稱比標準以太網提升一點六倍有效頻寬。二零二五年進一步推出 Spectrum-X Photonics，整合共封裝光學技術，讓單個 AI 工廠可連接百萬量級 GPU，同時帶來三點五倍的節能效益。
+
+這條產品線同時包含硬體和軟體，兩者捆綁販售，是大規模 AI 叢集的關鍵基礎設施。
+
+DRIVE 是 NVIDIA 在汽車領域的完整軟體堆疊。DRIVE OS 是以 Linux 或 QNX 為基礎的汽車作業系統，通過 TÜV SÜD 功能安全認證，提供安全啟動、防火牆、OTA 更新、Type-1 Hypervisor。DRIVE AV 負責感知、定位、路徑規劃。DRIVE Chauffeur 和 Concierge 則涵蓋 Level 3 以上的自駕和 AI 座艙功能。
+
+全新 Mercedes-Benz CLA 是第一款完整採用 NVIDIA DRIVE AV 軟體堆疊的量產車，二零二六年初開始在各市場陸續交付，搭載 Level 2 加加的自動駕駛功能。二零二六年初 NVIDIA 發布 Alpamayo，這是一個開源的自駕推論模型系列，定位是讓車輛不只感知道路，而是推理道路情境——例如判斷停在路邊的人是否即將走入車道。NVIDIA 的長期目標是二零二七年前讓合作夥伴用 DRIVE AV 部署 Level 4 商業車隊，但這個時程因監管環境的不確定性存在爭議。
+
+NVIDIA Isaac 是機器人 AI 開發的完整框架，由三個層次構成。Isaac Sim 是基於 Omniverse 的機器人模擬環境，支援 GPU 加速的平行模擬，用於合成資料生成和演算法驗證。Isaac Lab 是在 Isaac Sim 上層專為強化學習最佳化的輕量訓練框架，可同時跑數千個平行模擬。Isaac ROS 將 CUDA 加速帶進 ROS 2 生態，提供即時感知和路徑規劃工具。
+
+Isaac GR00T 是人形機器人的基礎模型。GR00T N1 是二零二五年發布的第一個開源通用人形機器人模型，N1.6 版本整合了 Cosmos Reason，一個針對物理 AI 的視覺語言模型。這個產品線的邏輯是：NVIDIA 提供模擬環境和基礎模型，讓機器人公司不需要從零開始訓練感知和操作能力，直接在 GR00T 上微調特定場景。
+
+二零二五年底 NVIDIA 還推出了 Newton 物理引擎，這是與 DeepMind、Disney Research 合作開發的開源物理引擎，主要目的是讓機器人訓練中的物理模擬更精確。
+
+Isaac for Healthcare 是針對醫療機器人的延伸，整合了 MONAI 醫療影像 AI 框架和 Holoscan 邊緣 AI 部署平台，目標應用包含手術機器人、影像輔助設備、復健機器人。
+
+除了上述大型平台，NVIDIA 在幾個垂直市場也有明確的軟體布局。Clara 是醫療 AI 工具集，涵蓋醫療影像分析和基因體學加速計算，面向醫院和生技公司。Earth-2 是高解析度天氣預報模型，與 ECMWF、台達電等機構合作，能達到傳統數值模式無法提供的公里級別解析度。BioNeMo 是蛋白質結構預測和分子動力學模擬的加速平台，目標用戶是製藥公司的計算化學部門。Riva 是多語言語音辨識和語音合成微服務，主要整合在客服中心和聲控介面等場景。
+
+GTC 2026 前夕，NVIDIA 宣布了 NemoClaw，這是一個開源的企業 AI Agent 部署平台。與 NIM 的推論微服務定位不同，NemoClaw 針對的是多步驟工作流程自動化，讓企業能夠用 AI Agent 接管重複性員工任務。
+
+技術決策上，NemoClaw 宣稱可在不依賴 NVIDIA GPU 的環境下運行。這是一個策略轉向，優先擴大生態系——與 Salesforce、Cisco、Google、Adobe、CrowdStrike 整合——而不是強制綁定硬體。定位是企業現有軟體工具的 AI 層疊加，而不是替換既有系統。
+
+整理這些產品線後，NVIDIA 的人才需求可以分成幾個技術深度層次。
+
+GPU 和 CUDA 基礎設施工程師是 NVIDIA 需求最深、最難招到的職位類型。CUDA Kernel 工程師需要精通 GPU 記憶體層次，能寫高度最佳化的 CUDA kernel，理解 Warp 排程和 Tensor Core 使用方式，學歷要求普遍是碩士或博士。Compiler 工程師參與 NVCC 開發、MLIR 和 LLVM IR 最佳化。GPU 系統軟體工程師負責 GPU Driver、CUDA Runtime、PCIe 和 NVLink 通訊層，需要 Linux Kernel 和系統程式設計能力。
+
+AI 系統工程師圍繞 NIM、NeMo、Triton Inference Server、TensorRT-LLM 的開發和最佳化。這層需要的是 AI 框架的深度——模型量化、KV Cache 管理、Tensor Parallelism 的實作細節——而不只是會用 PyTorch API。涵蓋模型訓練基礎設施工程師、推論最佳化工程師，以及 LLM 應用工程師。NVIDIA 在這個層次同時需要做工具開發的工程師，和做 Developer Relations 的 Solutions Architect，後者負責幫大客戶把 NIM 整合進既有基礎設施。
+
+平台工程與 MLOps 方面，Run:ai 和 Base Command Manager 的核心開發以及 Kubernetes 加 GPU 資源管理需要 Cloud Native 工程能力，同時理解 GPU 虛擬化和多租戶隔離的問題。這個方向的入門門檻相對低，NVIDIA 在各地也有部分平台工程職缺。
+
+電腦視覺與感知工程師主要在 DRIVE 和 Isaac 兩條產品線。需要的技術組合是三維感知、多感測器融合、追蹤和預測。DRIVE 平台的嵌入式系統工程師還需要 QNX 或 Linux 實時系統、Type-1 Hypervisor、功能安全相關背景。
+
+機器人工程師圍繞 Isaac 平台，包含具身 AI 研究員、ROS 2 和中介軟體工程師、機器人模擬工程師。
+
+三維圖形與物理模擬工程師圍繞 Omniverse 和 Isaac Sim 的開發，需要 OpenUSD 的深度知識、即時光線追蹤、物理模擬技術。人才來源比較分散，部分來自遊戲引擎開發，部分來自電影視覺特效產業。
+
+網路系統軟體工程師服務 Spectrum-X 和 InfiniBand 產品線，具體技術包含 RDMA over Converged Ethernet、高效能 MPI 通訊函式庫，以及 P4 語言——可程式化交換機的資料平面。這個方向的人才原本大多在 Mellanox 的以色列團隊。
+
+觀察 NVIDIA 的招募模式，有幾個共通技術底線。C++ 是必需的，從 CUDA Kernel 到 USD API 到 DriveOS，幾乎所有效能敏感的模組都是 C++；Python 是上層膠水，C++ 是核心。NVIDIA 喜歡能同時理解硬體行為和軟體設計的工程師，「貼近底層」是招募廣告中頻繁出現的描述。即使是機器人或渲染工程師，理解 GPU 執行模型也是加分項。NVIDIA 很少招募全端工程師，職缺通常要求特定領域的深度。
+
+NVIDIA 的軟體版圖可以用三條軸線描述：加速計算基礎設施、企業 AI 平台、垂直行業應用框架。這個結構讓 NVIDIA 試圖扮演 AI 時代的 Microsoft 的角色：不只賣硬體，還賣作業系統、中介軟體、開發工具，以及垂直應用。
+
+對想進入 NVIDIA 軟體部門的工程師，最直接的路徑是：在 CUDA、TensorRT、Triton、或 OpenUSD 任一領域做出有深度的開源貢獻，或者在特定垂直領域同時具備領域知識和 GPU 軟體能力。NVIDIA 錄取率低於百分之三，廣泛的技能組合不如一個非常尖銳的專業點。
