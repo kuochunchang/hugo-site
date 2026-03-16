@@ -1,0 +1,99 @@
+Chrome 146 於 2026 年 3 月 10 日正式進入穩定版本，覆蓋 Windows、Mac 與 Linux。這個版本最值得關注的是兩條與 AI agent 有關的路徑同時打開：Chrome DevTools MCP 伺服器讓 coding agent 直接接管現有瀏覽器 session，WebMCP 則讓網頁本身成為 MCP 伺服器。除此之外，Sanitizer API、Scoped Custom Element Registry 等等待許久的標準終於多瀏覽器同步支援，WebGPU Compatibility Mode 把 WebGPU 的可用性往下延伸到老舊 GPU。
+
+MCP 與瀏覽器的接合
+
+Chrome 144 已開放遠端除錯功能，Chrome 146 進一步降低 DevTools MCP 伺服器的設定門檻。開啟遠端除錯後，支援 MCP 的 AI agent 可以透過 autoConnect 旗標自動連入現有的瀏覽器 session，不需要重新登入就能存取需要身份驗證的頁面。
+
+這解決了 coding agent 協助除錯的一個實際痛點：過去 agent 需要在獨立環境重現問題，碰到需要登入的服務就卡住。現在可以直接接入工程師正在操作的 Chrome，讀取網路面板、選取 Elements 節點、執行 Lighthouse 效能稽核、分析 Console 錯誤、抓取 LCP 指標。
+
+DevTools MCP server 的 0.19.0 版本新增了 Slim Mode，也就是精簡 token 描述、可在隔離儲存環境執行的螢幕錄製、記憶體快照，以及進階文字輸入能力。Chrome 在 session 被控制期間會顯示提示，每次新的遠端除錯 session 需要明確允許，這個機制和 Playwright、Selenium 的既有流程一致，差別在於現在是接管現有 session 而非開新的。
+
+WebMCP 是不同層次的提案。W3C 社群草稿於 2026 年 3 月 9 日發布，Chrome 146 將它放在開發者試驗階段，透過實驗性網路平台功能旗標啟用。
+
+核心 API 是 navigator.modelContext，讓網頁宣告自己能提供哪些工具給 AI agent 呼叫。除了這種程式化的做法，WebMCP 也支援宣告式方式：在現有的 HTML 表單加上 toolname 和 tooldescription 屬性，幾乎不需要改程式碼就能讓 agent 看到並呼叫表單動作。宣告式方式適合現有的表單流程，程式化方式可以封裝任意邏輯、定義精確的參數結構，讓 agent 呼叫更可靠。
+
+DevTools MCP 是「由外接入」：agent 從瀏覽器外部取得控制權，跟現有的瀏覽器自動化工具是同一個技術路線，差別在於現在可以共用已登入的 session。WebMCP 是「由內暴露」：網頁主動宣告自己的能力，agent 不需要分析 DOM 就知道能做什麼，網頁本身就像一個跑在瀏覽器裡的伺服器。
+
+這個差異也決定各自的安全邊界：DevTools MCP 需要 Chrome 本地的遠端除錯權限，攻擊面比較受控；WebMCP 的工具由頁面宣告，瀏覽器只負責仲介呼叫，信任問題更複雜。
+
+MCP 整合讓瀏覽器本身成為新的攻擊面。核心威脅是提示注入：攻擊者可以在合法頁面中嵌入肉眼不可見的指令，例如用 CSS 隱藏的 div、白底白字文字、零寬度 Unicode 字符。由於語言模型在處理階段無法區分「資料」與「指令」，內容安全政策對此類攻擊基本無效。
+
+安全研究者指出這構成一個致命三角：agent 有資料存取能力，也就是登入的 session；會解析不受信任的外部內容，例如網頁和電子郵件；又能呼叫有副作用的動作，例如送出表單或觸發 API。三者同時成立時，提示注入的影響就不只是洩漏資訊，而是代替用戶執行操作。
+
+已被識別的攻擊向量包括電子郵件劫持、銀行頁面操縱、企業 wiki 污染，以及零寬度 Unicode 有效載荷編碼。安全研究機構 guard402 的報告估計，超過 72% 的間接提示注入可以繞過模型防護機制。WebMCP 規格裡雖然有一些安全機制，但都是建議性質，無法強制執行。這不是靠更多模型訓練就能修補的結構性問題，需要在 agent 處理外部輸入之前就介入的內容防火牆層。
+
+Sanitizer API 正式落地
+
+Sanitizer API 解決了一個長久的痛點：安全地將不受信任的 HTML 插入 DOM。傳統做法依賴第三方函式庫，各種自製白名單實作也是 XSS 漏洞的常見來源。
+
+Chrome 146 的實作提供兩個核心介面：setHTML 方法功能類似 innerHTML，但在寫入前自動移除可能執行腳本的內容；parseHTML 方法則用於安全解析 HTML 字串。
+
+API 設計是預設安全：預設移除所有可能執行腳本的內容，包括 script 標籤、事件處理器、javascript 協議 URL，開發者只需要決定是否保留某些額外標籤，不需要自己維護白名單。Firefox 同步支援，意味著這個標準終於取得足夠的跨瀏覽器支援，可以在不依賴第三方函式庫的情況下使用。
+
+宣告式捲動觸發動畫
+
+CSS 捲動觸發動畫解決了一個常見的 JavaScript 模式：在捲動事件處理器裡判斷元素位置、手動觸發或暫停動畫。現在可以純 CSS 宣告，透過 animation-trigger 屬性指定捲動觸發，trigger-scope 屬性則可以限制觸發名稱的可見範圍，避免不同元件的觸發器互相干擾。
+
+這類捲動連動動畫可以在合成器執行緒上跑，不需要 JavaScript，也可以被瀏覽器卸載至 worker 執行緒，避免佔用主執行緒。對捲動性能的意義高於單純的語法便利。
+
+Scoped Custom Element Registry
+
+Web Components 生態長期有一個痛點：頁面載入兩個不同版本的函式庫，兩者都嘗試用相同名稱註冊同一個自訂元素，後者會拋出錯誤。
+
+Scoped Custom Element Registry 讓每個 shadow root 可以有自己的元素定義。在呼叫 attachShadow 時傳入自訂的 registry，shadow root 裡的元素就會解析到該 registry 的定義，外部全域的定義互不干擾。Safari 先前已支援，Chrome 146 加入後覆蓋更廣；Firefox 目前尚未支援。
+
+WebGPU 擴展
+
+WebGPU Compatibility Mode 是這個版本 WebGPU 更新中影響面最廣的部分。它提供一個可以選擇啟用的受限 WebGPU 子集，可以在 OpenGL ES 和 Direct3D 11 等舊版圖形 API 上執行，大幅擴展 WebGPU 應用能覆蓋的裝置範圍。使用方式是在請求顯示卡適配器時指定 featureLevel 為 compatibility，對簡單的應用而言通常只需要這一行改動。代價是不能使用某些進階功能，但對行動裝置和老舊硬體的覆蓋率有實際影響。
+
+新的 TRANSIENT_ATTACHMENT 紋理旗標讓 render pass 的操作留在 tile memory 中，避免顯存往返傳輸。tile-based 渲染架構在行動 GPU 上是主流，tile memory 的利用效率直接影響功耗與渲染速度。
+
+WGSL 著色器語言現在允許將紋理和取樣器物件儲存在 let 宣告中，讓著色器程式碼的寫法更接近一般程式語言的慣例。
+
+WebNN Origin Trial
+
+WebNN，也就是 Web Neural Network API，在 Chrome 146 進入 Origin Trial 階段。它讓 Web 應用透過統一介面呼叫作業系統的原生機器學習服務，底層可以是 GPU、NPU 或其他專用加速器。
+
+開發者不再需要在 Web 應用中打包完整的機器學習執行環境；WebNN 直接對接硬體加速路徑，理論上能在支援的裝置上達到接近原生應用的推論速度。配合 WebGPU Compatibility Mode 的推出，Google 在加速把瀏覽器定位為 client-side AI 運算的執行環境。
+
+安全修補
+
+Chrome 146 修補了 29 個安全漏洞，其中最嚴重的是 CVE-2026-3913，一個 WebML 元件中的堆積緩衝區溢位，嚴重級別為 Critical。其餘 11 個高嚴重性漏洞分布在 Web Speech、Agents、Extensions 等元件中，涵蓋整數溢位、釋放後使用及越界存取等類型。漏洞獎金計畫本次共發出 21 萬 1 千美元，單筆最高 4 萬 3 千美元。
+
+Selective Permissions Intervention
+
+這個功能的邏輯是：用戶允許一個網站存取地理位置，不代表嵌入該網站的第三方廣告腳本也能存取同一個權限。
+
+Chrome 146 在瀏覽器層面攔截廣告相關的 JavaScript 對地理位置、麥克風、剪貼簿、藍牙、USB、螢幕擷取等 API 的存取請求。判斷是否是廣告相關的 JavaScript 依賴 Chrome 的廣告偵測機制。與 Firefox 的增強型追蹤保護相比，Firefox 的方式主要封鎖網路請求，Selective Permissions Intervention 是在 API 呼叫層面攔截，兩者互補。在桌機和 Android 上同步推出。
+
+本地網路存取保護
+
+請求到本地 IP 範圍，包括 loopback 和私有位址，現在需要用戶確認。這針對兩類攻擊：一是透過惡意網頁對路由器、印表機等本地設備發起跨站請求偽造；二是用本地埠掃描進行瀏覽器指紋識別。
+
+企業環境可以透過兩個新的群組原則調整行為。
+
+DevTools 改進
+
+Console 指令歷史保存：使用者現在可以從歷史紀錄中取出一道指令、開始修改，然後切換去查看其他歷史條目，再回來時草稿仍然保留。這是社群貢獻修復的一個長期痛點。
+
+Adopted Stylesheets 可視化：採用 adoptedStyleSheets API 注入的樣式表現在會在 Elements 面板中以獨立節點呈現，可以直接檢視和編輯。這讓 Shadow DOM 和 Web Components 的樣式除錯變得可行。
+
+Grid Editor 新增對 grid-auto-flow: dense 的切換支援。「Privacy and Security」面板改名為「Security」，隱私相關資訊移入 Console。
+
+JavaScript 平台更新
+
+Iterator.concat 是 TC39 Iterator Sequencing 提案的實作，用於串接多個 iterator，不需要先全部展開成陣列，支援惰性求值，不建立中間陣列。
+
+dragover 事件中設定的 dropEffect 值現在會正確保留至 drop 事件，修正了過去與 HTML5 規範的偏差。LCP 候選的發出改為以最大已繪製元素為準，不再等待未完成繪製的圖片，讓指標變化更加線性可預期。
+
+Vertical Tabs 可手動啟用
+
+Vertical Tabs 在 Chrome 146 從 Chrome 145 的 flag 實驗擴大為可透過 Chrome 設定介面手動啟用的功能。Tab bar 可以移到畫面左側，側邊欄可以縮放為只顯示 favicon 或同時顯示 favicon 和頁面標題。水平 tab bar 在分頁數量多時每個分頁會被壓縮到只剩 favicon，Vertical Tabs 讓標題資訊保持可讀。Edge 和 Vivaldi 先做了這個功能，Chrome 跟進。
+
+整體觀察
+
+Chrome 146 的方向很清楚：把瀏覽器從「用戶操作的工具」往「AI agent 的作業環境」方向拉。DevTools MCP 讓 coding agent 可以直接介入工程師的工作 session；WebMCP 嘗試讓整個 Web 對 AI agent 更可程式化，雖然現在是開發者試驗狀態，但 API 的形狀已經確定。
+
+Sanitizer API 降低開發者防禦 XSS 的負擔；Selective Permissions Intervention 收緊第三方腳本的權限範圍；WebGPU Compatibility Mode 擴大了 Web 機器學習的硬體基礎，配合 WebNN 的 Origin Trial 一起看，方向很明顯。
+
+安全社群的擔憂有工程依據：提示注入的防護問題至今沒有成熟的解法，MCP 把這個問題的攻擊面從 chatbot 介面擴展到整個瀏覽器工作階段。Scoped Custom Element Registry 和 Sanitizer API 是等待了相當長時間的標準化補完，終於在多個瀏覽器支援下有了實用意義。
