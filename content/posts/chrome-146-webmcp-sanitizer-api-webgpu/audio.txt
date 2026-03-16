@@ -1,0 +1,27 @@
+Chrome 146 於 2026 年 3 月 10 日正式發布。這個版本同時推進了三個方向：WebMCP 以實驗旗標形式預覽，試圖讓瀏覽器成為 AI agent 的工具基礎設施；Sanitizer API 正式落地，結束開發者依賴第三方防護方案的局面；WebGPU 加入相容性模式，向下延伸至較舊的硬體裝置。
+
+WebMCP，全名 Web Model Context Protocol，是 Google 和 Microsoft 聯合起草的草案規範，目前在 W3C 社群小組討論中。在 Chrome 146 裡，開發者可以透過 chrome flags 啟用一個測試旗標來預覽這個功能。
+
+現有 AI agent 操作網頁的方式大多依賴截取畫面、解析 HTML 結構、模擬點擊。這條路徑很脆弱，網站改個樣式名稱，agent 就找不到按鈕了。而且截圖的 token 消耗極高，每張超過兩千個 token，結構化工具呼叫每次只消耗二十到一百個 token，效率差距接近 89%。
+
+WebMCP 的設計想法是讓網站主動宣告自己提供哪些操作。API 有兩種方式：命令式的方式是透過 navigator.modelContext.registerTool 用 JavaScript 動態註冊工具；宣告式的方式則是直接在 HTML 表單加上屬性，瀏覽器自動生成對應的工具定義，零 JavaScript 改動成本。
+
+安全設計上，規範有幾層護欄：工具繼承宿主頁的同源邊界、僅限 HTTPS 使用、CSP 可控制 WebMCP API。但問題在結構性層面。一旦 agent 能讀取頁面內容，隱藏在頁面裡的惡意指令就能繞過這些防護，因為安全政策防的是「執行」，不是「讀取」。研究數據顯示，超過 72% 的間接 prompt injection 能繞過模型層面的防護。目前 WebMCP 仍是實驗性預覽，不建議用於處理敏感資料的生產環境。
+
+Sanitizer API 在 Chrome 146 正式落地，Firefox 148 也已支援，兩者在 2026 年初相繼完成，結束了多年來開發者只能靠 DOMPurify 等第三方函式庫的狀態。
+
+Web 開發中最常見的 XSS 攻擊向量之一就是 innerHTML：直接把使用者輸入塞進去，就可能執行惡意腳本。Sanitizer API 提供兩個核心方法：setHTML 和 parseHTML，兩者都在解析時就進行清理，比先解析再清理更安全。預設設定下，所有可執行腳本的內容都被移除，包含 script 標籤、onclick 等 inline 事件處理器、以及 javascript 協議的連結。
+
+這個 API 的邊界是：它處理的是把 HTML 字串插入 DOM 的安全性，不能防止伺服器端的 XSS，也不能替代 Content Security Policy 的角色。DOM clobbering 攻擊在預設模式下也不在防護範圍，需要額外設定。
+
+Scoped Custom Element Registry 解決了 Web Components 長期的命名衝突問題。過去所有自訂元素定義共用同一個全域 registry，兩個函式庫都想用同一個標籤名稱時，後載入的會靜默失敗。Chrome 146 引入的 Scoped Custom Element Registry 讓每個 registry 完全隔離，同一個標籤名稱在不同 registry 裡可以指向不同的 class。這對微前端架構中多個 design system 共存的場景很有幫助。
+
+Scroll-triggered animations 是 Chrome 146 加入的另一個 CSS 功能，和 2023 年的 scroll-driven animations 是不同概念。滾動驅動動畫是動畫進度跟著滾動位置走；觸發式動畫是元素越過特定位置時「觸發」，之後按正常時間軸播放。以前要實現「元素進入視窗時播放進場動畫」，需要 IntersectionObserver 加 JavaScript 切換 CSS 樣式類別，現在可以純 CSS 宣告式完成，而且可以卸載到 compositor thread 執行。
+
+WebGPU 在 Chrome 146 新增了 Compatibility Mode，目標是讓只支援 OpenGL ES 3.1 或 Direct3D 11 的舊裝置也能跑 WebGPU 程式。關鍵設計點是：相容模式是完整 WebGPU 的嚴格子集，為相容模式寫的程式在新裝置上同樣能跑，不需要維護兩套程式碼。目前主要針對 Android 裝置，ChromeOS 和 Windows Direct3D 11 也在評估中。
+
+WebGPU 同版本還新增了 TRANSIENT_ATTACHMENT 紋理用途旗標，讓 GPU 知道某個紋理只在 render pass 期間使用、之後可以丟棄。在行動端的 tile-based 渲染架構上，這能讓暫時性紋理資料留在 tile memory 裡，不必寫回顯示記憶體，減少頻寬消耗。WGSL 著色器語言則新增了 texture_and_sampler_let 擴展，允許用 let 宣告儲存紋理和取樣器，是為未來的無綁定渲染架構鋪路。
+
+其他值得關注的變動：TC39 的 Iterator.concat 提案落地，可以直接合併多個 iterator。廣告相關腳本被阻擋使用地理位置、麥克風、剪貼簿等敏感 API，這是瀏覽器層面的單邊決策。AudioContext.playbackStats 新屬性暴露音頻延遲和 underrun 數據。meta name text-scale 讓頁面字體與 OS 文字縮放設定同步。WebNN，也就是 Web Neural Networks API，進入 origin trial，讓瀏覽器直接調用 OS 的機器學習服務和硬體加速。
+
+幾條線索值得放在一起看。WebMCP 和 Sanitizer API 看似無關，但都指向同一個方向：瀏覽器正在把過去依賴第三方方案解決的問題納入平台層，前者補足安全基礎設施，後者開拓新的互動模型。WebGPU Compatibility Mode 則正面回應了 WebGPU 推出以來「硬體要求太高」的批評，子集相容超集的設計讓開發者不必在新舊裝置間做取捨。WebMCP 的安全問題目前還沒有系統性解方，prompt injection 的根源是語言模型無法在架構上區分資料與指令，這不是 API 設計能完全解決的問題。Chrome 147 預計在 2026 年 4 月 7 日發布。
